@@ -1,0 +1,60 @@
+/**************
+navigation nav_dropdown
+**************/
+.nav_dropdown {
+	display: inline-block;
+	position: relative;
+}
+
+.nav_dropdown_content {
+	display: none;
+	position: absolute;
+	min-width: 100%;
+	overflow: auto; 
+	background-color: #FFFFFF;
+	box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
+}
+
+.nav_dropdown:hover .nav_dropdown_content, 	.nav_dropdown_button:focus + .nav_dropdown_content {
+	display: block;
+}
+
+.nav_dropdown_content a {
+	display: block;
+	color: #000000;
+	padding: 5px;
+	text-decoration: none;
+}
+
+.nav_dropdown_content a:hover, .nav_dropdown_content a:focus  {
+	color: #FFFFFF;
+	background-color: #00A4BD;
+}
+
+/**************
+table pages
+**************/
+#toggle_hide_buttons p  {
+	display: inline-block;
+}
+
+.toggle_hide_button {
+	background-color: #2196F3;
+	display: inline-block;
+}
+
+/**************
+song table page
+**************/
+
+#songs_table_data .song_title:before {
+	content: open-quote;
+}
+
+#songs_table_data .song_title:after {
+	content: close-quote;
+}
+
+#songs_table_data .song_album {
+	font-style: italic;
+}
