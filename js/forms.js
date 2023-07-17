@@ -1,9 +1,46 @@
 /**************
 
 Executes in form_suggestions function.
+Return sorted array.
 **************/
-function sort_and_filter_unique_array(array) {
-	
+function sort_array(array) {
+	var i, switching, should_switch;
+	switching = true;
+	//Make a loop that will continue until no switching has been done:
+	while (switching) {
+		switching = false; //start by saying no switching is done
+		for (i = 0; i < (array.length-1); i++) {
+			should_switch = false; //start by saying there should be no switching
+			if (array[i].toLowerCase() > array[i+1].toLowerCase()) { //check if the next item should switch place with the current item
+				//if next item is alphabeticallylower than current item, mark as a switch and break the loop
+				should_switch = true;
+				break;
+			}
+		}
+		if (should_switch) {
+			//if a switch has been marked, make the switch and mark the switch as done
+			var array_first_item_switch = array[i];
+			array[i] = array[i+1];
+			array[i+1] = array_first_item_switch;
+			switching = true;
+		} 
+
+		
+	}
+	return array;
+}
+
+/**************
+
+Executes in form_suggestions function.
+Return array of unique items.
+**************/
+function filter_unique_array(array) {
+	var filtered_array = [];
+	for (i = 0; i < (array.length-1); i++) {
+		
+	} 
+	return filtered_array;
 }
 
 /**************
@@ -31,6 +68,8 @@ function form_suggestions(data_object, object_keyname) {
 			options_array[options_array.length] = data_object[i][object_keyname];
 		}
 	}
+	
+	options_array = sort_array(options_array);
 	
 	//add options from options_array
 	for (i = 0; i < options_array.length; i++) {
