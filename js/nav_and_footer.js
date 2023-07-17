@@ -2,7 +2,8 @@ document.getElementById("nav").innerHTML = `<a href="index.html" tabindex="0">Ho
 	<div class="nav_dropdown">
 		<button type="button" class="nav_dropdown_button" tabindex="0" onclick="toggle_dropdown_display('nav_dropdown_songs')"><a href="songs.html" tabindex="0">Songs</a></button>
 		<div id="nav_dropdown_songs" class="nav_dropdown_content">
-			<a href="songs_table.html" tabindex="0">Song Table</a>
+			<a href="song_form.html" tabindex="0">Song Form</a>
+			<a href="songs_table.html" tabindex="0">Songs Table</a>
 			<a href="songs_data.html" tabindex="0">Songs Data</a>
 		</div>
 	</div>

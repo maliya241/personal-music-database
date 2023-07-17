@@ -1,3 +1,13 @@
+
+form_suggestions(songs_object, "song_title");
+form_suggestions(songs_object, "song_album");
+form_suggestions(songs_object, "song_artist");
+form_suggestions(songs_object, "song_language");
+form_suggestions(songs_object, "song_genre");
+form_suggestions(songs_object, "song_theme");
+form_suggestions(songs_object, "song_discovered_how");
+form_suggestions(songs_object, "song_year_discovered");
+
 /**************
 add_song creates a code block of a song object with information given in the form. 
 Executes on click.
@@ -42,46 +52,6 @@ function add_song() {
 }
 
 /**************
-add_new_field adds another field corresponding with the given classname.
-field_classname is the classname of the needed field.
-Executes on click.
-**************/
-function add_new_field(field_classname) {
-	var new_field = document.createElement("input");
-	new_field.setAttribute('type', 'text');
-	var new_id = field_classname + "_" + document.getElementsByClassName(field_classname).length;
-	new_field.setAttribute('id', new_id);
-	new_field.setAttribute('class', field_classname);
-	new_field.setAttribute('name', field_classname);
-	var field_div = field_classname+"_div";
-	document.getElementById(field_div).append(new_field);
-}
-
-/**************
-field_values_to_string checks if there are more than one elements with the given classname. If there is, then it returns the values in a string that is formatted like an array. If not, it returns the value of the one element.
-field_classname is a classname.
-Executes in add_song function.
-Returns a string.
-**************/
-function field_values_to_string(field_classname) {
-	var field_classname_elements = document.getElementsByClassName(field_classname);
-	
-	var field_value_string = "'"+field_classname_elements[0].value+"'"; //get first value
-	
-	if (field_classname_elements.length > 1) { //if more than one value, make add other value(s) to string and format string to look like an array
-		for (i = 1; i < field_classname_elements.length; i++) { //already added first value
-			if (field_classname_elements[i].value.length > 0) { //checks value is not empty
-				field_value_string += ", '"+field_classname_elements[i].value+"'";
-			}
-		}
-		if (field_value_string.length > (field_classname_elements[0].value.length+2)) { //checks for more than one value has been added to string
-			field_value_string = "["+field_value_string+"]";
-		}
-	} 
-	return field_value_string; 
-}
-
-/**************
 copy_code_block copies text from element selected by a given id. If element is a <pre> tag, it will copy the format the text has.
 id_of_text_to_be_copied is the id of the element with the text to be copied.
 Executes on click of Copy Code Block button.
@@ -123,13 +93,13 @@ function duration_form_validation(form_input_element_id) {
 }
 
 /**************
-multiple_input_form_validation
+multiple_input_form_validation returns true if it meets one of the following conditions: only one input field, more than one input field and first input field is not empty, or multiple input fields are all empty. If it does not meet any of the conditions, add p element with warning and return false. 
 Executes in form_validation function.
 Returns boolean.
 **************/
 function multiple_input_form_validation(form_input_element_classname) {
 	var input_element = document.getElementsByClassName(form_input_element_classname);
-	var last_input_element_id = form_input_element_classname + "_" + (document.getElementsByClassName(form_input_element_classname).length-1);
+	var last_input_element_id = form_input_element_classname + "_" + (document.getElementsByClassName(form_input_element_classname).length-1); //get the id of the last input element with the same class
 	
 	var warning = document.createElement("p"); //create warning element
 	warning.setAttribute('class', 'year_validation_warning validation_warning');
@@ -171,7 +141,7 @@ function year_form_validation(form_input_element_id) {
 }
 
 /**************
-form_validation executes other validations functions and returns the result.
+form_validation executes other validation functions and returns the result.
 Executes in add_song function.
 Returns boolean.
 **************/
