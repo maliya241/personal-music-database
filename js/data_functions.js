@@ -8,7 +8,11 @@ function populate_table(data_object) {
 	for (i = 0; i < data_object.length; i++) { //iterates through the data object
 		var new_tr = id_of_table.appendChild(document.createElement("tr"));
 		for (j = 0; j < data_object_keynames.length; j++) { //iterates through the properties of the data objecct
-			new_tr.innerHTML += `<td class="`+data_object_keynames[j]+`">`+data_object[i][data_object_keynames[j]]+`</td>`;
+			if (Array.isArray(data_object[i][data_object_keynames[j]])) { //moves nonempty items into a copy of array and formats copy for readabiliy  
+					new_tr.innerHTML += `<td class="`+data_object_keynames[j]+`">`+data_object[i][data_object_keynames[j]].filter(item => item.length > 0).join(", ")+`</td>`;
+			} else {
+				new_tr.innerHTML += `<td class="`+data_object_keynames[j]+`">`+data_object[i][data_object_keynames[j]]+`</td>`;
+			}
 		}
 	}
 
