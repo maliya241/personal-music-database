@@ -1,12 +1,12 @@
+form_suggestions_from_data_object(songs_object, "song_title");
+form_suggestions_from_data_object(songs_object, "song_album");
+form_suggestions_from_data_object(songs_object, "song_artist");
+form_suggestions_from_data_object(songs_object, "song_language");
+form_suggestions_from_data_object(songs_object, "song_genre");
+form_suggestions_from_data_object(songs_object, "song_theme");
+form_suggestions_from_data_object(songs_object, "song_discovered_how");
+form_suggestions_from_data_object(songs_object, "song_year_discovered");
 
-form_suggestions(songs_object, "song_title");
-form_suggestions(songs_object, "song_album");
-form_suggestions(songs_object, "song_artist");
-form_suggestions(songs_object, "song_language");
-form_suggestions(songs_object, "song_genre");
-form_suggestions(songs_object, "song_theme");
-form_suggestions(songs_object, "song_discovered_how");
-form_suggestions(songs_object, "song_year_discovered");
 
 /**************
 add_song creates a code block of a song object with information given in the form. 
@@ -43,6 +43,15 @@ function add_song() {
 }
 
 `;
+		form_suggestions_from_form("song_title");
+		form_suggestions_from_form("song_album");
+		form_suggestions_from_form("song_artist");
+		form_suggestions_from_form("song_language");
+		form_suggestions_from_form("song_genre");
+		form_suggestions_from_form("song_theme");
+		form_suggestions_from_form("song_discovered_how");
+		form_suggestions_from_form("song_year_discovered");
+		 
 	} else {
 		var warning = document.createElement("p");
 		warning.setAttribute('class', 'song_validation_warning validation_warning');
