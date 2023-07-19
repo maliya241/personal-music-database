@@ -104,17 +104,20 @@ Return array with array of unique items as first element and array of unique ite
 function filter_and_count_unique_array(sorted_array) {
 	var unique_array = [];
 	var count_array = [];
+	var percentage_array = [];
 	var count = 1;
 	for (i = 0; i < sorted_array.length; i++) {
 		if (sorted_array[i] !== sorted_array[i+1] && sorted_array[i].length > 0) {
 			unique_array[unique_array.length] = sorted_array[i];
 			count = 1; //reset count for new item
 			count_array[count_array.length] = count;
+			percentage_array[percentage_array.length] = Math.round((100*count)/sorted_array.length);
 		} else if (sorted_array[i] === sorted_array[i+1] && sorted_array[i].length > 0) {
 			count++;
 			count_array[unique_array.length] = count;
+			percentage_array[unique_array.length] = Math.round((100*count)/sorted_array.length);
 		}
 	} 
 	count_array.splice(-1); //remove last element because it does not correspond to anything
-	return [unique_array, count_array];
+	return [unique_array, count_array, percentage_array];
 }

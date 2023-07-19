@@ -66,15 +66,15 @@ toggle_classname parameter: takes a string argument, needs to be the classname o
 Executes on button click.
 **************/
 function toggle_hide(toggle_classname) {
-	var table_column = document.getElementsByClassName(toggle_classname);
+	var elements_to_hide = document.getElementsByClassName(toggle_classname);
 	var toggle_button_id = "toggle_hide_button_"+toggle_classname;
 	var toggle_button = document.getElementById(toggle_button_id);
-	for (i = 0; i < table_column.length; i++ ) {
-		if (table_column[i].style.display === "none") { 
-			table_column[i].style.display = ""; 
+	for (i = 0; i < elements_to_hide.length; i++ ) {
+		if (elements_to_hide[i].style.display === "none") { 
+			elements_to_hide[i].style.display = ""; 
 			toggle_button.style.background = "#2196F3";
 		} else {
-			table_column[i].style.display = "none"; 
+			elements_to_hide[i].style.display = "none"; 
 			toggle_button.style.background = "#ccc";
 		}
 	}

@@ -47,14 +47,22 @@ table pages
 song table page
 **************/
 
-#songs_table_data .song_title:before {
+#songs_table_data .song_title::before {
 	content: open-quote;
 }
 
-#songs_table_data .song_title:after {
+#songs_table_data .song_title::after {
 	content: close-quote;
 }
 
 #songs_table_data .song_album {
 	font-style: italic;
+}
+
+/**************
+data analysis pages
+**************/
+
+td[class$='_percentage']::after {
+	content: "%";
 }
