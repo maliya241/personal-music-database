@@ -1,1 +1,1 @@
-populate_table(songs_object);
+populate_table_from_data_object(songs_object);

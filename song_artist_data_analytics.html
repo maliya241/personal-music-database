@@ -14,15 +14,25 @@
 		</nav>
 		
 		<h1>Song Artist Data Analytics</h1>
-
+		
+		<table id="song_artist_data_analytics_table">
+			<thead>
+				<th class="song_artist_data_analytics_artist" onclick="sort_table('song_artist_data_analytics_table_body', 'song_artist_data_analytics_table_artist')">Artist</th>
+				<th class="song_artist_data_analytics_artist_count" onclick="sort_table('song_artist_data_analytics_table_body', 'song_artist_data_analytics_table_count')">Count</th>
+			</thead>
+			<tbody id="song_artist_data_analytics_table_body">
+			</tbody>
+		</table>
 		
 		<footer id="footer">
 		</footer>
 		<div id="scripts">
 			<script src="js/nav_and_footer.js"></script>
 			<script src="js/data/songs.js"></script>
+			<script src="js/table_functions.js"></script>
 			<script src="js/data_functions.js"></script>
-			<script src="js/songs/songs_artist_data_analytics.js"></script>
+			<script src="js/sort_and_filter_functions.js"></script>
+			<script src="js/songs/song_artist_data_analytics.js"></script>
 		</div>
 	</body>				
 </html>
