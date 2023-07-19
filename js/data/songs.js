@@ -101,3 +101,74 @@ songs_object[songs_object.length] = {
 	song_discovered_how:'YouTube Recommended',
 	song_year_discovered:'',
 }
+
+songs_object[songs_object.length] = {
+	song_title:"I Built a Friend",
+	song_album:'These Two Windows',
+	song_artist:'Alec Benjamin',
+	song_duration:'02:56',
+	song_date_released:'2017-05-30',
+	song_language:'English',
+	song_explicit:false,
+	song_genre:'Alt Z',
+	song_theme:['childhood friendships', 'growing up'],
+	song_discovered_how:'YouTube Recommended',
+	song_year_discovered:'2020',
+}
+
+songs_object[songs_object.length] = {
+	song_title:"If We Have Each Other",
+	song_album:'Narrated For You',
+	song_artist:'Alec Benjamin',
+	song_duration:'03:01',
+	song_date_released:'2018-07-27',
+	song_language:'English',
+	song_explicit:false,
+	song_genre:'Alt Z',
+	song_theme:['support through adversity', 'family'],
+	song_discovered_how:'YouTube Recommended',
+	song_year_discovered:'2018',
+}
+
+songs_object[songs_object.length] = {
+	song_title:"1994",
+	song_album:'Narrated For You',
+	song_artist:'Alec Benjamin',
+	song_duration:'03:04',
+	song_date_released:'2016-09-16',
+	song_language:'English',
+	song_explicit:false,
+	song_genre:'Alt Z',
+	song_theme:['childhood', 'growing up'],
+	song_discovered_how:'YouTube Recommended',
+	song_year_discovered:'2020',
+}
+
+songs_object[songs_object.length] = {
+	song_title:"Boy in the Bubble",
+	song_album:'Narrated For You',
+	song_artist:'Alec Benjamin',
+	song_duration:'03:01',
+	song_date_released:'2018-06-22',
+	song_language:'English',
+	song_explicit:false,
+	song_genre:'Alt Z',
+	song_theme:['bullying', 'abuse', 'silence'],
+	song_discovered_how:'YouTube Recommended',
+	song_year_discovered:'2020',
+}
+
+songs_object[songs_object.length] = {
+	song_title:"Death of a Hero",
+	song_album:'Narrated For You',
+	song_artist:'Alec Benjamin',
+	song_duration:'03:11',
+	song_date_released:'2018-09-20',
+	song_language:'English',
+	song_explicit:false,
+	song_genre:'Alt Z',
+	song_theme:['failed expectations', 'disappointment', 'growing up'],
+	song_discovered_how:'YouTube Recommended',
+	song_year_discovered:'2020',
+}
+

@@ -150,8 +150,8 @@ function form_suggestions_from_form(object_keyname) {
 
 	var input_element = document.getElementsByClassName(input_classname);
 	
-	if (input_element.length > 0) {
-		//populate options_array with items from input_string with its corresponding keyname
+	if (input_element[0].value.length > 0) {
+		//populate options_array with items from the value of input_element with its corresponding keyname
 		var options_array = [];
 		if (input_element.length > 1) {
 			for (i = 0; i < input_element.length; i++) {
@@ -161,12 +161,11 @@ function form_suggestions_from_form(object_keyname) {
 			options_array[options_array.length] = input_element[0].value;
 		}
 		
-		//add existing datalist options to options array
+		//add existing datalist options to options_array
 		var input_classname_datalist = input_classname + "_list";
 		var existing_datalist_elements = document.getElementById(input_classname_datalist).getElementsByTagName("option");
 		for (i = 0; i < existing_datalist_elements.length; i++) {
 			options_array[options_array.length] = existing_datalist_elements[i].value;
-			console.log(options_array[i]);
 		}
 		
 		options_array = filter_unique_array(timsort(options_array)); //sort and filter out duplicates in datalist options array
@@ -214,4 +213,12 @@ function field_values_to_string(field_classname) {
 		}
 	} 
 	return field_value_string; 
+}
+
+/**************
+reset_form resets all input fields in form that was specified by the form's id.
+Executes on click.
+**************/
+function reset_form(form_id) {
+	document.getElementById(form_id).reset();
 }

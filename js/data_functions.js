@@ -62,21 +62,20 @@ function toggle_hide(toggle_classname) {
 }
 
 /**************
-sort_table sorts a given table by a selected column (indicated by given classname). Duplicate data in the selected column will hold the previous table row position when compared to each other.
-table_id parameter is id of the table to be sorted.
-table_classname parameter indicates which column of data is used to sort the table.
+sort_table sorts a given table body by a selected column (indicated by given classname). Duplicate data in the selected column will hold the previous table row position when compared to each other.
+table_body_id parameter is id of the table body to be sorted.
+table_classname parameter indicates which column of data is used to sort the table body.
 Executes on click.
 **************/
-function sort_table(table_id, table_classname) {
-	var table, rows, switching, i, x, y, should_switch, sort_direction, switch_count = 0;
-	table = document.getElementById(table_id);
-	table_head_classname = table.rows[0].getElementsByClassName(table_classname)[0];
+function sort_table(table_body_id, table_classname) {
+	var table_body, rows, switching, i, x, y, should_switch, sort_direction, switch_count = 0;
+	table_body = document.getElementById(table_body_id);
 	switching = true;
 	sort_direction = "asc"; //set the sorting direction to ascending
 	while (switching) { //make a loop that will continue until no switching has been done
 		switching = false;
-		rows = table.rows;
-		for (i = 1; i < rows.length - 1; i++) { //loop through all table rows (except the first, which contains table headers)
+		rows = table_body.rows;
+		for (i = 0; i < rows.length - 1; i++) { //loop through all table body rows
 			should_switch = false; //start by saying there should be no switching
 			x = rows[i].getElementsByClassName(table_classname)[0]; //first element to compare
 			y = rows[i+1].getElementsByClassName(table_classname)[0]; //next element to compare
