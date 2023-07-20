@@ -66,3 +66,48 @@ data analysis pages
 td[class$='_percentage']::after {
 	content: "%";
 }
+
+/**************
+svg
+**************/
+
+.pie_chart {
+  margin: 0 auto;
+  transform: rotate(-90deg);
+  background: #ddd;
+  border-radius: 50%;
+  display: block;
+}
+
+/**************
+color picker
+**************/
+	
+.color_swatch {
+	height: 3.75em;
+	width: 3.75em;
+}
+
+.color_selector {
+	padding: 1.1em;
+	background-color: rgba(92, 157, 52, 1.0);
+	border-radius: 0.5em;
+	max-width: 5em;
+	margin: 1rem auto;
+	display: inline-block;
+}
+
+.color_slider {
+	margin: 0.25em auto;
+	width: 100%;
+}
+
+.color_r, .color_g, .color_b {
+	display: block;
+}
+
+.add_color_button {
+	display: inline-block;
+	height: 100%;
+	max-width: 5em;
+}

@@ -119,5 +119,6 @@ function filter_and_count_unique_array(sorted_array) {
 		}
 	} 
 	count_array.splice(-1); //remove last element because it does not correspond to anything
+	percentage_array.splice(-1); //remove last element because it does not correspond to anything
 	return [unique_array, count_array, percentage_array];
 }
