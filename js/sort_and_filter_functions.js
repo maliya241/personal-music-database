@@ -111,11 +111,11 @@ function filter_and_count_unique_array(sorted_array) {
 			unique_array[unique_array.length] = sorted_array[i];
 			count = 1; //reset count for new item
 			count_array[count_array.length] = count;
-			percentage_array[percentage_array.length] = Math.round((100*count)/sorted_array.length);
+			percentage_array[percentage_array.length] = (100*count)/sorted_array.length;
 		} else if (sorted_array[i] === sorted_array[i+1] && sorted_array[i].length > 0) {
 			count++;
 			count_array[unique_array.length] = count;
-			percentage_array[unique_array.length] = Math.round((100*count)/sorted_array.length);
+			percentage_array[unique_array.length] = (100*count)/sorted_array.length;
 		}
 	} 
 	count_array.splice(-1); //remove last element because it does not correspond to anything

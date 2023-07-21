@@ -77,7 +77,7 @@ songs_object[songs_object.length] = {
 songs_object[songs_object.length] = {
 	song_title:"Hero",
 	song_album:'Searchlights',
-	song_artist:['a', '', 'gd', 'ds'],
+	song_artist:['a', '', 'gd'],
 	song_duration:'03:44',
 	song_date_released:'2009-08-25',
 	song_language:'English',
