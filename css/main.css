@@ -74,8 +74,6 @@ svg
 .pie_chart {
   margin: 0 auto;
   transform: rotate(-90deg);
-  background: #ddd;
-  border-radius: 50%;
   display: block;
 }
 

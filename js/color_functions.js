@@ -119,6 +119,7 @@ function change_chart_color(chart_classname) {
 	var chart = document.getElementsByClassName(chart_classname);
 	var colors_array = select_chart_colors(chart.length);
 	for (i = 0; i < chart.length; i++) {
+		chart[i].setAttributeNS(null, "fill", colors_array[i]);
 		chart[i].setAttributeNS(null, "stroke", colors_array[i]);
 	}
 }
@@ -272,8 +273,12 @@ function add_color(color_selectors_div_id, chart_classname) {
 	remove_color_button.innerText = "Remove Color";
 	color_selector_div.appendChild(remove_color_button);
 	
-	//add new color to chart
-	change_chart_color(chart_classname);	
+	// //change background color of color selector div and add new color to chart
+	// change_selector_color(color_selector_div, chart_classname, random_r_value);	
+	// change_selector_color(color_selector_div, chart_classname, random_g_value);	
+	// change_selector_color(color_selector_div, chart_classname, random_b_value);	
+	
+	change_chart_color(chart_classname);
 }
 
 /**************
