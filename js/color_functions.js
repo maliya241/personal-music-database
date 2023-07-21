@@ -1,7 +1,7 @@
 /**************
 get_rgb_values takes a string of rgb or rgba property and returns an array of the values.
 rgb_string parameter is a string that contains the rgb or rgba property 
-Executes in change_color_slider function and change_color_text_input function.
+Executes in change_selector_color_slider function and change_selector_color_text_input function.
 Returns array rgb or rgba values with the position of the values correspond to the acronym.
 **************/
 function get_rgb_values(rgb_string) {
@@ -14,40 +14,40 @@ function get_rgb_values(rgb_string) {
 }
 
 /**************
-change_color_slider gets the value from the range input in the given div, assigns that value to its corresponding text input, and calls change_color functions with color_div_id and input_value as its arguments.
+change_selector_color_slider gets the value from the range input in the given div, assigns that value to its corresponding text input, and calls change_selector_color functions with color_div_id and input_value as its arguments.
 color_div_id parameter is the id of the div that contains the color select elements.
 chart_classname 
 Executes on click.
 **************/
-function change_color_slider(color_div_id, chart_classname) {
+function change_selector_color_slider(color_div_id, chart_classname) {
 	var input_value = document.getElementById(color_div_id+"_slider").value;
 	document.getElementById(color_div_id+"_text_input").value = input_value;
 	
-	change_color(color_div_id, chart_classname, input_value);
+	change_selector_color(color_div_id, chart_classname, input_value);
 }
 
 /**************
-change_color_text_input gets the value from the range input in the given div, assigns that value to its corresponding range input, and calls change_color functions with color_div_id and input_value as its arguments.
+change_selector_color_text_input gets the value from the range input in the given div, assigns that value to its corresponding range input, and calls change_selector_color functions with color_div_id and input_value as its arguments.
 color_div_id parameter is the id of the div that contains the color select elements.
 chart_classname
 Executes on click.
 **************/
-function change_color_text_input(color_div_id, chart_classname) {
+function change_selector_color_text_input(color_div_id, chart_classname) {
 	var input_value = document.getElementById(color_div_id+"_text_input").value;
 	document.getElementById(color_div_id+"_slider").value = input_value;
 	
-	change_color(color_div_id, chart_classname, input_value);	
+	change_selector_color(color_div_id, chart_classname, input_value);	
 }
 
 
 /**************
-change_color changes the background-color of a given div with the new value and changes the given chart colors.
+change_selector_color changes the background-color of a given div with the new value and changes the given chart colors.
 color_div_id parameter is the id of the div that contains the color select elements.
 chart_classname parameter is the given chart that needs colors changed.
 input_value is the value from input.
-Executes in change_color_slider and change_color_text_input functions.
+Executes in change_selector_color_slider and change_selector_color_text_input functions.
 **************/
-function change_color(color_div_id, chart_classname, input_value) {
+function change_selector_color(color_div_id, chart_classname, input_value) {
 	var input_number = color_div_id.match(/_[0-9]*$/)[0];
 	var color_selector = document.getElementById("color_selector"+input_number);
 	
@@ -61,11 +61,7 @@ function change_color(color_div_id, chart_classname, input_value) {
 		color_selector.style.setProperty("background-color", "rgb("+previous_rgba_values[0]+", "+previous_rgba_values[1]+", "+input_value+")");
 	}
 	
-	var chart = document.getElementsByClassName(chart_classname);
-	var colors_array = select_chart_colors(chart.length);
-	for (i = 0; i < chart.length; i++) {
-		chart[i].setAttributeNS(null, "stroke", colors_array[i]);
-	}
+	change_chart_color(chart_classname);
 }
 
 /**************
@@ -92,7 +88,7 @@ function get_tint_value(current_value, tint_factor_denominator) {
 /**************
 select_chart_colors selects a given number of shades and tints from an array of rgb values.
 number_of_colors parameter is the number of colors to be selected.
-Executes in create_pie_chart funciton and change_color function.
+Executes in create_pie_chart funciton and change_selector_color function.
 Returns array of colors.
 **************/
 function select_chart_colors(number_of_colors) {
@@ -112,6 +108,19 @@ function select_chart_colors(number_of_colors) {
 		}
 	}
 	return selected_colors;
+}
+
+/**************
+change_chart_color changes the colors of chart of a given classname.
+chart_classname parameter is the given chart that needs colors changed.
+Executes in change_selector_color funciton, add_color, remove_color functions.
+**************/
+function change_chart_color(chart_classname) {
+	var chart = document.getElementsByClassName(chart_classname);
+	var colors_array = select_chart_colors(chart.length);
+	for (i = 0; i < chart.length; i++) {
+		chart[i].setAttributeNS(null, "stroke", colors_array[i]);
+	}
 }
 
 /**************
@@ -158,8 +167,8 @@ function add_color(color_selectors_div_id, chart_classname) {
 	color_r_text_input.setAttribute("min", "0");
 	color_r_text_input.setAttribute("max", "255");
 	color_r_text_input.setAttribute("size", "3");
-	color_r_text_input.setAttribute("oninput", "change_color_text_input('color_r_"+color_selector_index+"', '"+chart_classname+"')");
-	color_r_text_input.setAttribute("onchange", "change_color_text_input('color_r_"+color_selector_index+"', '"+chart_classname+"')");
+	color_r_text_input.setAttribute("oninput", "change_selector_color_text_input('color_r_"+color_selector_index+"', '"+chart_classname+"')");
+	color_r_text_input.setAttribute("onchange", "change_selector_color_text_input('color_r_"+color_selector_index+"', '"+chart_classname+"')");
 	var random_r_value = Math.floor(Math.random() * 255);
 	color_r_text_input.setAttribute("value", random_r_value);
 	color_r_div.appendChild(color_r_text_input);
@@ -172,7 +181,7 @@ function add_color(color_selectors_div_id, chart_classname) {
 	color_r_slider.setAttribute("class", "color_slider");
 	color_r_slider.setAttribute("min", "0");
 	color_r_slider.setAttribute("max", "255");
-	color_r_slider.setAttribute("onchange", "change_color_slider('color_r_"+color_selector_index+"', '"+chart_classname+"')");
+	color_r_slider.setAttribute("onchange", "change_selector_color_slider('color_r_"+color_selector_index+"', '"+chart_classname+"')");
 	color_r_text_input.setAttribute("value", random_r_value);
 	color_r_div.appendChild(color_r_slider);
 	
@@ -197,8 +206,8 @@ function add_color(color_selectors_div_id, chart_classname) {
 	color_g_text_input.setAttribute("min", "0");
 	color_g_text_input.setAttribute("max", "255");
 	color_g_text_input.setAttribute("size", "3");
-	color_g_text_input.setAttribute("oninput", "change_color_text_input('color_g_"+color_selector_index+"', '"+chart_classname+"')");
-	color_g_text_input.setAttribute("onchange", "change_color_text_input('color_g_"+color_selector_index+"', '"+chart_classname+"')");
+	color_g_text_input.setAttribute("oninput", "change_selector_color_text_input('color_g_"+color_selector_index+"', '"+chart_classname+"')");
+	color_g_text_input.setAttribute("onchange", "change_selector_color_text_input('color_g_"+color_selector_index+"', '"+chart_classname+"')");
 	var random_g_value = Math.floor(Math.random() * 255);
 	color_g_text_input.setAttribute("value", random_g_value);
 	color_g_div.appendChild(color_g_text_input);
@@ -211,7 +220,7 @@ function add_color(color_selectors_div_id, chart_classname) {
 	color_g_slider.setAttribute("class", "color_slider");
 	color_g_slider.setAttribute("min", "0");
 	color_g_slider.setAttribute("max", "255");
-	color_g_slider.setAttribute("onchange", "change_color_slider('color_g_"+color_selector_index+"', '"+chart_classname+"')");
+	color_g_slider.setAttribute("onchange", "change_selector_color_slider('color_g_"+color_selector_index+"', '"+chart_classname+"')");
 	color_g_text_input.setAttribute("value", random_g_value);
 	color_g_div.appendChild(color_g_slider);
 	
@@ -236,8 +245,8 @@ function add_color(color_selectors_div_id, chart_classname) {
 	color_b_text_input.setAttribute("min", "0");
 	color_b_text_input.setAttribute("max", "255");
 	color_b_text_input.setAttribute("size", "3");
-	color_b_text_input.setAttribute("oninput", "change_color_text_input('color_b_"+color_selector_index+"', '"+chart_classname+"')");
-	color_b_text_input.setAttribute("onchange", "change_color_text_input('color_b_"+color_selector_index+"', '"+chart_classname+"')");
+	color_b_text_input.setAttribute("oninput", "change_selector_color_text_input('color_b_"+color_selector_index+"', '"+chart_classname+"')");
+	color_b_text_input.setAttribute("onchange", "change_selector_color_text_input('color_b_"+color_selector_index+"', '"+chart_classname+"')");
 	var random_b_value = Math.floor(Math.random() * 255);
 	color_b_text_input.setAttribute("value", random_b_value);
 	color_b_div.appendChild(color_b_text_input);
@@ -250,7 +259,7 @@ function add_color(color_selectors_div_id, chart_classname) {
 	color_b_slider.setAttribute("class", "color_slider");
 	color_b_slider.setAttribute("min", "0");
 	color_b_slider.setAttribute("max", "255");
-	color_b_slider.setAttribute("onchange", "change_color_slider('color_b_"+color_selector_index+"', '"+chart_classname+"')");
+	color_b_slider.setAttribute("onchange", "change_selector_color_slider('color_b_"+color_selector_index+"', '"+chart_classname+"')");
 	color_b_text_input.setAttribute("value", random_b_value);
 	color_b_div.appendChild(color_b_slider);
 	
@@ -263,13 +272,17 @@ function add_color(color_selectors_div_id, chart_classname) {
 	remove_color_button.innerText = "Remove Color";
 	color_selector_div.appendChild(remove_color_button);
 	
+	//add new color to chart
+	change_chart_color(chart_classname);	
 }
 
 /**************
 remove_color removes html for color_selector div of a given id. 
 color_selectors_div_id parameter is the id of a div for color selectors.
+chart_classname parameter is the id of the chart that needs a color added.
 Executes on click;
 **************/
-function remove_color(color_selector_div_id) {
+function remove_color(color_selector_div_id, chart_classname) {
 	document.getElementById(color_selector_div_id).remove();
+	change_chart_color(chart_classname);	
 }
