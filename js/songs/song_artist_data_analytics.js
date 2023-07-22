@@ -3,4 +3,4 @@ const unique_artists_and_count_array = filter_and_count_unique_array(timsort(art
 
 populate_table_from_array_of_arrays(unique_artists_and_count_array, "song_artist_data_analytics_table");
 
-create_pie_chart("artist_count_pie_chart", unique_artists_and_count_array[2]);
+create_pie_chart("artist_count_pie_chart", unique_artists_and_count_array);

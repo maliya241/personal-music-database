@@ -84,7 +84,6 @@ function get_tint_value(current_value, tint_factor_denominator) {
 	return (+current_value)+((255-current_value)*(1/tint_factor_denominator)); //current_value + (255 - current_value) * tint_factor
 }
 
-
 /**************
 select_chart_colors selects a given number of shades and tints from an array of rgb values.
 number_of_colors parameter is the number of colors to be selected.
@@ -120,7 +119,6 @@ function change_chart_color(chart_classname) {
 	var colors_array = select_chart_colors(chart.length);
 	for (i = 0; i < chart.length; i++) {
 		chart[i].setAttributeNS(null, "fill", colors_array[i]);
-		chart[i].setAttributeNS(null, "stroke", colors_array[i]);
 	}
 }
 

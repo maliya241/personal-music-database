@@ -43,6 +43,10 @@ table pages
 	display: inline-block;
 }
 
+table {
+	margin: 0 auto;
+}
+
 /**************
 song table page
 **************/
@@ -67,13 +71,16 @@ td[class$='_percentage']::after {
 	content: "%";
 }
 
+figcaption {
+	 text-align:center;
+}
+
 /**************
 svg
 **************/
 
 .pie_chart {
   margin: 0 auto;
-  transform: rotate(-90deg);
   display: block;
 }
 

@@ -20,6 +20,48 @@ function get_property_values(data_object, data_object_keyname) {
 	return property_values;
 }
 
+/**************
+on_hover_over_chart adds legend to give data about the chart piece of a given id and changes fill opacity of each piece to half then changes the fill opacity of the piece of a given id back to 1.
+chart_path_classname parameter is the classname of chart's paths
+chart_path_id parameter is the id of the path that the mouse is on.
+Executes on mouse over (hover).
+**************/
+function on_hover_over_chart(chart_path_classname, chart_path_id) {
+	var chart_svg = document.getElementById(chart_path_classname);
+	var chart_path = document.getElementById(chart_path_id);
+	
+	//create legend for hovered piece
+	var chart_legend = document.createElement("p");
+	chart_legend.setAttribute("id", "chart_legend");
+	chart_legend.innerHTML = `<span>`+chart_path.getAttribute("data-item")+`</span><br><span>`+chart_path.getAttribute("data-count")+` (`+chart_path.getAttribute("data-percentage")+`%)</span>`;
+	chart_legend.style.setProperty("border-left", "2em solid "+chart_path.getAttribute("fill"));
+	chart_legend.style.setProperty("padding-left", "0.5em");
+	chart_svg.parentNode.insertBefore(chart_legend, chart_svg);
+	
+	//change fill opacity of chart
+	var chart_path_elements = document.getElementsByClassName(chart_path_classname);
+	for (i = 0; i < chart_path_elements.length; i++) {
+		chart_path_elements[i].setAttributeNS(null, "fill-opacity", "0.5");
+	}
+	chart_path.setAttributeNS(null, "fill-opacity", "1"); //reset fill opacity for the path that the mouse is on
+	// chart_path.setAttributeNS(null, "stroke-opacity", "1");
+}
+
+/**************
+on_hover_off_chart removes the legend and resets the fill opacity of each chart piece to 1.
+chart_path_classname parameter is the classname of chart's paths
+Executes on mouse out.
+**************/
+function on_hover_off_chart(chart_path_classname) {
+	document.getElementById("chart_legend").remove(); //remove legend
+	
+	//reset fill opacity of chart to 1
+	var chart_path_elements = document.getElementsByClassName(chart_path_classname);
+	for (i = 0; i < chart_path_elements.length; i++) {
+		chart_path_elements[i].setAttributeNS(null, "fill-opacity", "1");
+		// chart_path_elements[i].setAttributeNS(null, "stroke-opacity", "0");
+	}
+}
 
 /**************
 create_pie_chart_with_circle adds circle svg elements that represents the percentage data of a given array. 
@@ -66,7 +108,7 @@ function polar_to_cartesian(center_x, center_y, radius, angle_in_degrees) {
   };
 }
 
-function describe_arc(x, y, radius, start_angle, end_angle){
+function describe_circle_sector(x, y, radius, start_angle, end_angle){
 
     var start = polar_to_cartesian(x, y, radius, end_angle);
     var end = polar_to_cartesian(x, y, radius, start_angle);
@@ -86,41 +128,54 @@ function describe_arc(x, y, radius, start_angle, end_angle){
 /**************
 create_pie_chart adds path svg elements that represents the percentage data of a given array. 
 pie_chart_id parameter is the id of a svg that contains blank start of a pie chart.
-percentage_array parameter is the array that contains the percentages to make the pie chart slices.
+filter_and_count_unique_array parameter is the result of filter_and_count_unique_array function which is an array of arrays. First array is the sorted and filtered items. Second array is the count. Third array contains the percentages to make the pie chart slices. 
 Executes as a part of page set-up in its corresponding page js file.
 **************/
-function create_pie_chart(pie_chart_id, percentage_array) {
+function create_pie_chart(pie_chart_id, filter_and_count_unique_array) {
+	var items_array = filter_and_count_unique_array[0];
+	var count_array = filter_and_count_unique_array[1];
+	var percentage_array = filter_and_count_unique_array[2];
+	
 	var pie_chart_svg = document.getElementById(pie_chart_id);
-	var background_pie_chart = pie_chart_svg.getElementsByTagName("circle")[0];
+	var chart_data = pie_chart_svg.getAttribute("data-chart-data");
 	
-	var radius = background_pie_chart.getAttribute("r");
-	var center_x = background_pie_chart.getAttribute("cx");
-	var center_y = background_pie_chart.getAttribute("cy");
+	//pie chart values
+	var radius = pie_chart_svg.getAttribute("data-pie-chart-r");
+	var center_x = pie_chart_svg.getAttribute("data-pie-chart-cx");
+	var center_y = pie_chart_svg.getAttribute("data-pie-chart-cy");
 	
-	var pie_chart_circumference = background_pie_chart.getAttribute("r")*2*Math.PI;
 	var slice_degrees = [];
-	
 	for (i = 0; i < percentage_array.length; i++) { 
 		slice_degrees[i] = (percentage_array[i]/100)*360; //multiply percentage out of 360 degs
 	}
 	
 	var preceding_slice_degree_total = 0;
 	var colors_array = select_chart_colors(slice_degrees.length);
+	
+	//iterate through all pie chart pieces
 	for (i = 0; i < slice_degrees.length; i++) {
-		var d_value = describe_arc(center_x, center_y, radius, preceding_slice_degree_total, preceding_slice_degree_total+slice_degrees[i]);
+		var d_value = describe_circle_sector(center_x, center_y, radius, preceding_slice_degree_total, preceding_slice_degree_total+slice_degrees[i]); //calculate svg path for circle sector
 		
+		var chart_path_id = pie_chart_svg.getAttribute("id")+"_"+ items_array[i].toLowerCase().replace(" ", "_");
+		
+		//create svg path element
 		var new_path = document.createElementNS("http://www.w3.org/2000/svg", "path");
 		new_path.setAttributeNS(null, "d", d_value);
-		new_path.setAttributeNS(null, "class", background_pie_chart.getAttribute("class"));
+		new_path.setAttributeNS(null, "id", chart_path_id);
+		new_path.setAttributeNS(null, "class", pie_chart_svg.getAttribute("id"));
+		new_path.setAttributeNS(null, "data-item", items_array[i]);
+		new_path.setAttributeNS(null, "data-count", count_array[i]);
+		new_path.setAttributeNS(null, "data-percentage", Math.round(percentage_array[i]));
 		new_path.setAttributeNS(null, "fill", colors_array[i]);
 		new_path.setAttributeNS(null, "fill-opacity", "1");
-		new_path.setAttributeNS(null, "stroke", colors_array[i]);
-		new_path.setAttributeNS(null, "stroke-width", "0");
-		new_path.setAttributeNS(null, "stroke-opacity", "1");
+		// new_path.setAttributeNS(null, "stroke", "black");
+		// new_path.setAttributeNS(null, "stroke-width", "1");
+		// new_path.setAttributeNS(null, "stroke-linejoin", "round");
+		// new_path.setAttributeNS(null, "stroke-opacity", "0");
+		new_path.setAttributeNS(null, "onmouseover", "on_hover_over_chart('"+pie_chart_svg.getAttribute("id")+"', '"+chart_path_id+"')"); //send chart path classname and path id 
+		new_path.setAttributeNS(null, "onmouseout", "on_hover_off_chart('"+pie_chart_svg.getAttribute("id")+"')"); //send chart path classname
 		pie_chart_svg.appendChild(new_path);
 		
 		preceding_slice_degree_total += slice_degrees[i];
 	}	
-	
-	background_pie_chart.remove();
 }
