@@ -45,6 +45,11 @@ table pages
 
 table {
 	margin: 0 auto;
+	border-spacing: 0px;
+}
+
+td {
+	padding: 0.5em;
 }
 
 /**************

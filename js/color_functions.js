@@ -276,6 +276,8 @@ function add_color(color_selectors_div_id, chart_classname) {
 	// change_selector_color(color_selector_div, chart_classname, random_g_value);	
 	// change_selector_color(color_selector_div, chart_classname, random_b_value);	
 	
+	
+	
 	change_chart_color(chart_classname);
 }
 

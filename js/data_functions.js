@@ -21,7 +21,7 @@ function get_property_values(data_object, data_object_keyname) {
 }
 
 /**************
-on_hover_over_chart adds legend to give data about the chart piece of a given id and changes fill opacity of each piece to half then changes the fill opacity of the piece of a given id back to 1.
+on_hover_over_chart adds legend to give data about the chart piece of a given id and changes stylings of the chart and table so that the chart piece and its corresponding table row stand out.
 chart_path_classname parameter is the classname of chart's paths
 chart_path_id parameter is the id of the path that the mouse is on.
 Executes on mouse over (hover).
@@ -43,23 +43,35 @@ function on_hover_over_chart(chart_path_classname, chart_path_id) {
 	for (i = 0; i < chart_path_elements.length; i++) {
 		chart_path_elements[i].setAttributeNS(null, "fill-opacity", "0.5");
 	}
+	
+	//change stylings for chart piece
 	chart_path.setAttributeNS(null, "fill-opacity", "1"); //reset fill opacity for the path that the mouse is on
-	// chart_path.setAttributeNS(null, "stroke-opacity", "1");
+	chart_path.setAttributeNS(null, "stroke-opacity", "1");
+	chart_svg.appendChild(chart_path); //brings path to front of chart
+	
+	//change stylings for corresponding table row
+	var table_row = document.getElementById(chart_path.getAttribute("data-item").toLowerCase().replaceAll(" ", "_"));
+	var rgb_values = get_rgb_values(chart_path.getAttribute("fill"));
+	table_row.style.setProperty("background-color", "rgba("+rgb_values[0]+", "+rgb_values[1]+", "+rgb_values[2]+", 0.5)");
+	table_row.style.setProperty("outline", "2px solid rgb(0, 0, 0)");
 }
 
 /**************
-on_hover_off_chart removes the legend and resets the fill opacity of each chart piece to 1.
+on_hover_off_chart removes the legend and resets chart and table stylings.
 chart_path_classname parameter is the classname of chart's paths
 Executes on mouse out.
 **************/
 function on_hover_off_chart(chart_path_classname) {
 	document.getElementById("chart_legend").remove(); //remove legend
 	
-	//reset fill opacity of chart to 1
+	//reset styling
 	var chart_path_elements = document.getElementsByClassName(chart_path_classname);
 	for (i = 0; i < chart_path_elements.length; i++) {
 		chart_path_elements[i].setAttributeNS(null, "fill-opacity", "1");
-		// chart_path_elements[i].setAttributeNS(null, "stroke-opacity", "0");
+		chart_path_elements[i].setAttributeNS(null, "stroke-opacity", "0");
+		
+		document.getElementsByTagName("tr")[i].style.setProperty("background-color", "transparent");
+		document.getElementsByTagName("tr")[i].style.setProperty("outline", "0 solid transparent");
 	}
 }
 
@@ -156,7 +168,7 @@ function create_pie_chart(pie_chart_id, filter_and_count_unique_array) {
 	for (i = 0; i < slice_degrees.length; i++) {
 		var d_value = describe_circle_sector(center_x, center_y, radius, preceding_slice_degree_total, preceding_slice_degree_total+slice_degrees[i]); //calculate svg path for circle sector
 		
-		var chart_path_id = pie_chart_svg.getAttribute("id")+"_"+ items_array[i].toLowerCase().replace(" ", "_");
+		var chart_path_id = pie_chart_svg.getAttribute("id")+"_"+ items_array[i].toLowerCase().replaceAll(" ", "_");
 		
 		//create svg path element
 		var new_path = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -168,10 +180,10 @@ function create_pie_chart(pie_chart_id, filter_and_count_unique_array) {
 		new_path.setAttributeNS(null, "data-percentage", Math.round(percentage_array[i]));
 		new_path.setAttributeNS(null, "fill", colors_array[i]);
 		new_path.setAttributeNS(null, "fill-opacity", "1");
-		// new_path.setAttributeNS(null, "stroke", "black");
-		// new_path.setAttributeNS(null, "stroke-width", "1");
-		// new_path.setAttributeNS(null, "stroke-linejoin", "round");
-		// new_path.setAttributeNS(null, "stroke-opacity", "0");
+		new_path.setAttributeNS(null, "stroke", "rgb(0, 0, 0)");
+		new_path.setAttributeNS(null, "stroke-width", "1");
+		new_path.setAttributeNS(null, "stroke-linejoin", "round");
+		new_path.setAttributeNS(null, "stroke-opacity", "0");
 		new_path.setAttributeNS(null, "onmouseover", "on_hover_over_chart('"+pie_chart_svg.getAttribute("id")+"', '"+chart_path_id+"')"); //send chart path classname and path id 
 		new_path.setAttributeNS(null, "onmouseout", "on_hover_off_chart('"+pie_chart_svg.getAttribute("id")+"')"); //send chart path classname
 		pie_chart_svg.appendChild(new_path);

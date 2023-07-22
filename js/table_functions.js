@@ -7,6 +7,7 @@ function populate_table_from_data_object(data_object) {
 	var data_object_keynames = Object.keys(data_object[0]);
 	for (i = 0; i < data_object.length; i++) { //iterates through the data object
 		var new_tr = table_body.appendChild(document.createElement("tr"));
+		new_tr.setAttribute("id", data_object[i][data_object_keynames[0]].toLowerCase().replaceAll(" ", "_"));
 		for (j = 0; j < data_object_keynames.length; j++) { //iterates through the properties of the data object
 			if (Array.isArray(data_object[i][data_object_keynames[j]])) { //moves nonempty items into a copy of array and formats copy for readabiliy  
 					new_tr.innerHTML += `<td class="`+data_object_keynames[j]+`">`+data_object[i][data_object_keynames[j]].filter(item => item.length > 0).join(", ")+`</td>`;
@@ -29,6 +30,7 @@ function populate_table_from_array_of_arrays(array_of_arrays, table_id) {
 	var table_th = document.getElementById(table_id).getElementsByTagName("th");
 	for (i = 0; i < array_of_arrays[0].length; i++) { //iterates through the array in the array of arrays; each array in the array of arrays should be the same length; table rows
 		var new_tr = document.getElementById(id_of_table_body).appendChild(document.createElement("tr"));
+		new_tr.setAttribute("id", array_of_arrays[0][i].toLowerCase().replaceAll(" ", "_")); 
 		for (j = 0; j < array_of_arrays.length; j++) { //iterates through the array of arrays; table columns
 			var td_classname = table_id + "_" + table_th[j].innerText.toLowerCase();
 			new_tr.innerHTML += `<td class="`+td_classname+`">`+array_of_arrays[j][i]+`</td>`;
