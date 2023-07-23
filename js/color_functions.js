@@ -1,4 +1,22 @@
 /**************
+color_selectors_dropdown hides and unhides the color selectors when corresponding button is clicked 
+color_selectors_div_id parameter is the id of the color_selectors_div
+Executes on click.
+**************/
+function color_selectors_dropdown(color_selectors_div_id) {
+	var color_selector_div = document.getElementById(color_selectors_div_id);
+	var toggle_button_id = "color_selectors_button";
+	var toggle_button = document.getElementById(toggle_button_id);
+	if (color_selector_div.classList.contains("hide")) { 
+		color_selector_div.classList.remove("hide"); 
+		toggle_button.classList.remove("hide_toggle_button");
+	} else {
+		color_selector_div.classList.add("hide"); 
+		toggle_button.classList.add("hide_toggle_button");
+	}
+}
+
+/**************
 get_rgb_values takes a string of rgb or rgba property and returns an array of the values.
 rgb_string parameter is a string that contains the rgb or rgba property 
 Executes in change_selector_color_slider function and change_selector_color_text_input function.
@@ -99,7 +117,7 @@ function select_chart_colors(number_of_colors) {
 		var current_b = input_color_elements[color_option+2].value;
 		
 		var alpha_factor_denominator = i+2;
-		if (i%2 === 0) {
+		if (i%2 === 0) { 
 			selected_colors[i-1] = "rgba("+get_shade_value(current_r, alpha_factor_denominator)+", "+get_shade_value(current_g, alpha_factor_denominator)+", "+get_shade_value(current_b, alpha_factor_denominator)+", 1.0)";
 		} else {
 			selected_colors[i-1] =  "rgba("+get_tint_value(current_r, alpha_factor_denominator)+", "+get_tint_value(current_g, alpha_factor_denominator)+", "+get_tint_value(current_b, alpha_factor_denominator)+", 1.0)";

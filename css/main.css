@@ -32,6 +32,22 @@ navigation nav_dropdown
 }
 
 /**************
+toggle hide styles
+**************/
+.toggle_hide_button, .toggle_hide_button:hover, .toggle_hide_button:focus {
+	background-color: #00A4BD;
+}
+
+.hide {
+	display: none;
+}
+
+.hide_toogle_button {
+	background-color: #ccc;
+}
+
+
+/**************
 table pages
 **************/
 #toggle_hide_buttons p  {
