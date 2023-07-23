@@ -1,6 +1,39 @@
 /**************
-color_selectors_dropdown hides and unhides the color selectors when corresponding button is clicked 
-color_selectors_div_id parameter is the id of the color_selectors_div
+add_color_selectors_html_elements adds html for color selectors.
+color_selector_html_div_id parameter is the id of the div where the color selectors code will go.
+page_identifer parameter is value of data-chart-data that is used a unique prefix for the page table id (e.g. the name of the page all lowercase and underscores instead of spaces).
+chart_for_color_selector_id parameter is the id of the corresponding chart that will have its colors changed.
+Executes on click.
+**************/
+function add_color_selectors_html_elements(color_selector_html_div_id, page_identifer, chart_for_color_selector_id) {
+	document.getElementById(color_selector_html_div_id).innerHTML = `<button type="button" id="color_selectors_button" class="color_selectors_button toggle_hide_button hide_toggle_button" onclick="color_selectors_dropdown('`+page_identifer+`_color_selectors')">Change Color Theme</button>
+		<div id="`+page_identifer+`_color_selectors" class="color_selectors hide">
+			<div id="color_selector_0" class="color_selector">
+				<div class="color_swatch"></div>
+				<div id="color_r_0" class="color_r">
+					<label for="color_r_0_text_input">R</label>
+					<input type="text" name="color_r_0_text_input" id="color_r_0_text_input" class="color_text_input" min="0" max="255" size="3" oninput="change_selector_color_text_input('color_r_0', '`+pie_chart_for_color_selector_id+`')" onchange="change_selector_color_text_input('color_r_0', '`+pie_chart_for_color_selector_id+`')" value="92">
+					<input type="range" name="color_r_0_slider" id="color_r_0_slider" class="color_slider" min="0" max="255" onchange="change_selector_color_slider('color_r_0', '`+pie_chart_for_color_selector_id+`')" value="92">
+				</div>
+				<div id="color_g_0" class="color_g">
+					<label for="color_g_0_text_input">G</label>
+					<input type="text" name="color_g_0_text_input" id="color_g_0_text_input" class="color_text_input" min="0" max="255" size="3" oninput="change_selector_color_text_input('color_g_0', '`+pie_chart_for_color_selector_id+`')" onchange="change_selector_color_text_input('color_g_0', '`+pie_chart_for_color_selector_id+`')" value="157">
+					<input type="range" name="color_g_0_slider" id="color_g_0_slider" class="color_slider" min="0" max="255" onchange="change_selector_color_slider('color_g_0', '`+pie_chart_for_color_selector_id+`')" value="157">
+				</div>
+				<div id="color_b_0" class="color_b">
+					<label for="color_b_0_text_input">B</label>
+					<input type="text" name="color_b_0_text_input" id="color_b_0_text_input" class="color_text_input" min="0" max="255" size="3" oninput="change_selector_color_text_input('color_b_0', '`+pie_chart_for_color_selector_id+`')" onchange="change_selector_color_text_input('color_b_0', '`+pie_chart_for_color_selector_id+`')" value="52">
+					<input type="range" name="color_b_0_slider" id="color_b_0_slider" class="color_slider" min="0" max="255" onchange="change_selector_color_slider('color_b_0', '`+pie_chart_for_color_selector_id+`')" value="52">
+				</div>
+			</div>
+
+			<button type="button" id="add_color_button" class="add_color_button" onclick="add_color('`+page_identifer+`_color_selectors', '`+pie_chart_for_color_selector_id+`')">Add Color</button>
+		</div>`
+}
+
+/**************
+color_selectors_dropdown hides and unhides the color selectors when corresponding button is clicked.
+color_selectors_div_id parameter is the id of the color_selectors_div.
 Executes on click.
 **************/
 function color_selectors_dropdown(color_selectors_div_id) {
