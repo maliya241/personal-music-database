@@ -39,7 +39,6 @@ function change_selector_color_text_input(color_div_id, chart_classname) {
 	change_selector_color(color_div_id, chart_classname, input_value);	
 }
 
-
 /**************
 change_selector_color changes the background-color of a given div with the new value and changes the given chart colors.
 color_div_id parameter is the id of the div that contains the color select elements.
@@ -67,7 +66,7 @@ function change_selector_color(color_div_id, chart_classname, input_value) {
 /**************
 get_shade_value calculates the value of a given current value needed to shade the color.
 current_value parameter is one value of the current rgb.
-shade_factor_denominator parameter affects the darkness of the color value; cannot be 0; larger value calculates tint value to be greater
+shade_factor_denominator parameter affects the darkness of the color value; cannot be 0; larger value calculates shade value to be greater
 Executes in select_chart_colors function.
 **************/
 function get_shade_value(current_value, shade_factor_denominator) {
@@ -132,7 +131,8 @@ Warning: Does not apply css yet.
 **************/
 function add_color(color_selectors_div_id, chart_classname) {
 	var color_selectors_div = document.getElementById(color_selectors_div_id);
-	var color_selector_index = color_selectors_div.getElementsByClassName("color_selector").length;
+	var color_selector_elements = color_selectors_div.getElementsByClassName("color_selector");
+	var color_selector_index = +(color_selector_elements[color_selector_elements.length-1].id.match(/[0-9]*$/)[0])+1; //make unique id number by getting the number of the last color selector element's id and adding 1
 	
 	//create div to contain everything for new color form
 	var color_selector_div = document.createElement("div");
@@ -262,27 +262,42 @@ function add_color(color_selectors_div_id, chart_classname) {
 	color_b_slider.setAttribute("value", random_b_value);
 	color_b_div.appendChild(color_b_slider);
 	
-	//create remove color button
-	var remove_color_button = document.createElement("button");
-	remove_color_button.setAttribute("type", "button");
-	remove_color_button.setAttribute("id", "remove_color_button_"+color_selector_index);
-	remove_color_button.setAttribute("class", "remove_color_button");
-	remove_color_button.setAttribute("onclick", "remove_color('color_selector_"+color_selector_index+"', '"+chart_classname+"')");
-	remove_color_button.innerText = "Remove Color";
-	color_selector_div.appendChild(remove_color_button);
+	//create remove color button for all color selectors if one does not exist already
+	for (i = 0; i < color_selector_elements.length; i++) {
+		if (color_selector_elements[i].getElementsByTagName("button").length === 0) {
+			var remove_color_button = document.createElement("button");
+			remove_color_button.setAttribute("type", "button");
+			remove_color_button.setAttribute("id", "remove_color_button_"+color_selector_index);
+			remove_color_button.setAttribute("class", "remove_color_button");
+			remove_color_button.setAttribute("onclick", "remove_color('"+color_selector_elements[i].id+"', '"+chart_classname+"')");
+			remove_color_button.innerText = "Remove Color";
+			color_selector_elements[i].appendChild(remove_color_button);
+		}
+	}
 	
 	//change background color of color selector div and add new color to chart
 	color_selector_div.style.setProperty("background-color", "rgb("+random_r_value+", "+random_g_value+", "+random_b_value+")");
 	change_chart_color(chart_classname);
+	
+	//disable add color button if number of color selectors and table data rows are equal
+	var chart_table_body_id = document.getElementById(chart_classname).getAttribute("data-chart-data")+"_table_body";
+	if (color_selector_elements.length === document.getElementById(chart_table_body_id).getElementsByTagName("tr").length){
+		document.getElementById("add_color_button").disabled = true;
+	}	
 }
 
 /**************
 remove_color removes html for color_selector div of a given id. 
 color_selectors_div_id parameter is the id of a div for color selectors.
-chart_classname parameter is the id of the chart that needs a color added.
+chart_id parameter is the id of the chart that needs a color added.
 Executes on click;
 **************/
-function remove_color(color_selector_div_id, chart_classname) {
-	document.getElementById(color_selector_div_id).remove();
-	change_chart_color(chart_classname);	
+function remove_color(color_selector_div_id, chart_id) {
+	var color_selector_parent = document.getElementById(color_selector_div_id).parentNode;
+	if (color_selector_parent.getElementsByClassName("color_selector").length < 3) { //remove color selector remove color button if number of color selectors is less then minimum color selectors +2 
+		color_selector_parent.getElementsByClassName("color_selector")[0].getElementsByTagName("button")[0].remove();
+	}
+	document.getElementById(color_selector_div_id).remove(); //remove color selector
+	change_chart_color(chart_id); //take out color of removed color selector from chart
+	document.getElementById("add_color_button").disabled = false; //enable add color button
 }
