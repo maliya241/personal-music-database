@@ -12,22 +12,22 @@ function add_color_selectors_html_elements(color_selector_html_div_id, page_iden
 				<div class="color_swatch"></div>
 				<div id="color_r_0" class="color_r">
 					<label for="color_r_0_text_input">R</label>
-					<input type="text" name="color_r_0_text_input" id="color_r_0_text_input" class="color_text_input" min="0" max="255" size="3" oninput="change_selector_color_text_input('color_r_0', '`+pie_chart_for_color_selector_id+`')" onchange="change_selector_color_text_input('color_r_0', '`+pie_chart_for_color_selector_id+`')" value="92">
-					<input type="range" name="color_r_0_slider" id="color_r_0_slider" class="color_slider" min="0" max="255" onchange="change_selector_color_slider('color_r_0', '`+pie_chart_for_color_selector_id+`')" value="92">
+					<input type="text" name="color_r_0_text_input" id="color_r_0_text_input" class="color_text_input" min="0" max="255" size="3" oninput="change_selector_color_text_input('color_r_0', '`+chart_for_color_selector_id+`')" onchange="change_selector_color_text_input('color_r_0', '`+chart_for_color_selector_id+`')" value="92">
+					<input type="range" name="color_r_0_slider" id="color_r_0_slider" class="color_slider" min="0" max="255" onchange="change_selector_color_slider('color_r_0', '`+chart_for_color_selector_id+`')" value="92">
 				</div>
 				<div id="color_g_0" class="color_g">
 					<label for="color_g_0_text_input">G</label>
-					<input type="text" name="color_g_0_text_input" id="color_g_0_text_input" class="color_text_input" min="0" max="255" size="3" oninput="change_selector_color_text_input('color_g_0', '`+pie_chart_for_color_selector_id+`')" onchange="change_selector_color_text_input('color_g_0', '`+pie_chart_for_color_selector_id+`')" value="157">
-					<input type="range" name="color_g_0_slider" id="color_g_0_slider" class="color_slider" min="0" max="255" onchange="change_selector_color_slider('color_g_0', '`+pie_chart_for_color_selector_id+`')" value="157">
+					<input type="text" name="color_g_0_text_input" id="color_g_0_text_input" class="color_text_input" min="0" max="255" size="3" oninput="change_selector_color_text_input('color_g_0', '`+chart_for_color_selector_id+`')" onchange="change_selector_color_text_input('color_g_0', '`+chart_for_color_selector_id+`')" value="157">
+					<input type="range" name="color_g_0_slider" id="color_g_0_slider" class="color_slider" min="0" max="255" onchange="change_selector_color_slider('color_g_0', '`+chart_for_color_selector_id+`')" value="157">
 				</div>
 				<div id="color_b_0" class="color_b">
 					<label for="color_b_0_text_input">B</label>
-					<input type="text" name="color_b_0_text_input" id="color_b_0_text_input" class="color_text_input" min="0" max="255" size="3" oninput="change_selector_color_text_input('color_b_0', '`+pie_chart_for_color_selector_id+`')" onchange="change_selector_color_text_input('color_b_0', '`+pie_chart_for_color_selector_id+`')" value="52">
-					<input type="range" name="color_b_0_slider" id="color_b_0_slider" class="color_slider" min="0" max="255" onchange="change_selector_color_slider('color_b_0', '`+pie_chart_for_color_selector_id+`')" value="52">
+					<input type="text" name="color_b_0_text_input" id="color_b_0_text_input" class="color_text_input" min="0" max="255" size="3" oninput="change_selector_color_text_input('color_b_0', '`+chart_for_color_selector_id+`')" onchange="change_selector_color_text_input('color_b_0', '`+chart_for_color_selector_id+`')" value="52">
+					<input type="range" name="color_b_0_slider" id="color_b_0_slider" class="color_slider" min="0" max="255" onchange="change_selector_color_slider('color_b_0', '`+chart_for_color_selector_id+`')" value="52">
 				</div>
 			</div>
 
-			<button type="button" id="add_color_button" class="add_color_button" onclick="add_color('`+page_identifer+`_color_selectors', '`+pie_chart_for_color_selector_id+`')">Add Color</button>
+			<button type="button" id="add_color_button" class="add_color_button" onclick="add_color('`+page_identifer+`_color_selectors', '`+chart_for_color_selector_id+`')">Add Color</button>
 		</div>`
 }
 
