@@ -181,7 +181,7 @@ function add_color(color_selectors_div_id, chart_classname) {
 	color_r_slider.setAttribute("min", "0");
 	color_r_slider.setAttribute("max", "255");
 	color_r_slider.setAttribute("onchange", "change_selector_color_slider('color_r_"+color_selector_index+"', '"+chart_classname+"')");
-	color_r_text_input.setAttribute("value", random_r_value);
+	color_r_slider.setAttribute("value", random_r_value);
 	color_r_div.appendChild(color_r_slider);
 	
 	//create g form div
@@ -220,7 +220,7 @@ function add_color(color_selectors_div_id, chart_classname) {
 	color_g_slider.setAttribute("min", "0");
 	color_g_slider.setAttribute("max", "255");
 	color_g_slider.setAttribute("onchange", "change_selector_color_slider('color_g_"+color_selector_index+"', '"+chart_classname+"')");
-	color_g_text_input.setAttribute("value", random_g_value);
+	color_g_slider.setAttribute("value", random_g_value);
 	color_g_div.appendChild(color_g_slider);
 	
 	//create b form div
@@ -259,7 +259,7 @@ function add_color(color_selectors_div_id, chart_classname) {
 	color_b_slider.setAttribute("min", "0");
 	color_b_slider.setAttribute("max", "255");
 	color_b_slider.setAttribute("onchange", "change_selector_color_slider('color_b_"+color_selector_index+"', '"+chart_classname+"')");
-	color_b_text_input.setAttribute("value", random_b_value);
+	color_b_slider.setAttribute("value", random_b_value);
 	color_b_div.appendChild(color_b_slider);
 	
 	//create remove color button
@@ -271,13 +271,8 @@ function add_color(color_selectors_div_id, chart_classname) {
 	remove_color_button.innerText = "Remove Color";
 	color_selector_div.appendChild(remove_color_button);
 	
-	// //change background color of color selector div and add new color to chart
-	// change_selector_color(color_selector_div, chart_classname, random_r_value);	
-	// change_selector_color(color_selector_div, chart_classname, random_g_value);	
-	// change_selector_color(color_selector_div, chart_classname, random_b_value);	
-	
-	
-	
+	//change background color of color selector div and add new color to chart
+	color_selector_div.style.setProperty("background-color", "rgb("+random_r_value+", "+random_g_value+", "+random_b_value+")");
 	change_chart_color(chart_classname);
 }
 

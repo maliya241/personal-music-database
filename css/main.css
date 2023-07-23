@@ -99,12 +99,16 @@ color picker
 }
 
 .color_selector {
-	padding: 1.1em;
+	padding: 1em;
 	background-color: rgba(92, 157, 52, 1.0);
 	border-radius: 0.5em;
 	max-width: 5em;
-	margin: 1rem auto;
+	margin: 0.25em;
 	display: inline-block;
+}
+
+.color_text_input {
+	margin-left: .25em;
 }
 
 .color_slider {
