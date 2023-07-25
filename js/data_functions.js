@@ -184,9 +184,31 @@ function create_horizontal_bar_chart(horizontal_bar_chart_id, filter_and_count_u
 	var horizontal_bar_chart_svg = document.getElementById(horizontal_bar_chart_id);
 	var chart_data = horizontal_bar_chart_svg.getAttribute("data-chart-data");
 	
-	//horizontal bar chart titles
-	var x_axis_title_text = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-x-axis-title");
-	var y_axis_title_text = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-y-axis-title");
+	//add text styling for chart labels
+	horizontal_bar_chart_svg.innerHTML = `<style>
+	.y_axis_label {
+		margin: 0;
+		position: absolute;
+		top: 50%;
+		right: 0%;
+		-ms-transform: translateY(-50%);
+		transform: translateY(-50%);
+	}
+		
+	.y_axis_label_span {
+		color: rgb(0, 0, 0);
+		font-size: 0.25rem;
+		text-align: right;
+		word-wrap: break-word;
+		display: -webkit-box;
+		-webkit-line-clamp: 2; /* number of lines to show */
+        line-clamp: 2; 
+		-webkit-box-orient: vertical;
+		
+	}
+</style>`;
+	
+	var chart_padding = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-padding");
 
 	//horizontal bar chart axes points
 	var x_axis_left_point = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-x-axis-left-point");
@@ -223,15 +245,20 @@ function create_horizontal_bar_chart(horizontal_bar_chart_id, filter_and_count_u
 	var bar_interval = ((y_axis_bottom_point-y_axis_top_point)/(count_array.length*2+(count_array.length-1))); //affects y axis
 	var bar_height = bar_interval*2;
 	var bar_axis_offset = 0.25;
+	var label_axis_offset = 5*bar_axis_offset;
+	var bar_label_max_width = (+x_axis_left_point)-(+chart_padding);
 	
 	var colors_array = select_chart_colors(bar_percentage_array.length);
 	
 	for (i = 0 ; i < bar_percentage_array.length; i++) {
 		var bar_end_point = (bar_percentage_array[i]*(x_axis_right_point-x_axis_left_point));//x axis point
 		var chart_path_id = horizontal_bar_chart_svg.getAttribute("id")+"_"+ items_array[i].toLowerCase().replaceAll(" ", "_");
+		var x = ((+x_axis_left_point)+bar_axis_offset);
+		var y = (((+y_axis_top_point)+bar_axis_offset)+((bar_interval+bar_height)*i));
 		
+		//create horizontal bar
 		var horizontal_bar = document.createElementNS("http://www.w3.org/2000/svg", "path");
-		horizontal_bar.setAttributeNS(null, "d", "M"+((+x_axis_left_point)+bar_axis_offset)+" "+(((+y_axis_top_point)+bar_axis_offset)+((bar_interval+bar_height)*i))+" v"+bar_height+" h"+bar_end_point+" v-"+bar_height+" Z");
+		horizontal_bar.setAttributeNS(null, "d", "M"+x+" "+y+" v"+bar_height+" h"+bar_end_point+" v-"+bar_height+" Z");
 		horizontal_bar.setAttributeNS(null, "id", chart_path_id);
 		horizontal_bar.setAttributeNS(null, "class", horizontal_bar_chart_svg.getAttribute("id"));
 		horizontal_bar.setAttributeNS(null, "data-item", items_array[i]);
@@ -246,5 +273,14 @@ function create_horizontal_bar_chart(horizontal_bar_chart_id, filter_and_count_u
 		horizontal_bar.setAttributeNS(null, "onmouseover", "on_hover_over_chart('"+horizontal_bar_chart_svg.getAttribute("id")+"', '"+chart_path_id+"')"); //send chart path classname and path id 
 		horizontal_bar.setAttributeNS(null, "onmouseout", "on_hover_off_chart('"+horizontal_bar_chart_svg.getAttribute("id")+"')"); //send chart path classname
 		horizontal_bar_chart_svg.appendChild(horizontal_bar);
+		
+		//create corresponding label
+		var horizontal_bar_label = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+		horizontal_bar_label.setAttributeNS(null, "x", ((+x_axis_left_point)-(label_axis_offset+bar_label_max_width)));
+		horizontal_bar_label.setAttributeNS(null, "y", y);
+		horizontal_bar_label.setAttributeNS(null, "width", bar_label_max_width);
+		horizontal_bar_label.setAttributeNS(null, "height", bar_height);
+		horizontal_bar_chart_svg.appendChild(horizontal_bar_label);
+		horizontal_bar_label.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" class="y_axis_label"><span xmlns="http://www.w3.org/1999/xhtml" class="y_axis_label_span">`+items_array[i]+`</span></div>`;
 	}
 }
