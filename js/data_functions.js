@@ -29,11 +29,7 @@ Executes on mouse over (hover).
 function on_hover_over_chart(chart_path_classname, chart_path_id) {
 	var chart_svg = document.getElementById(chart_path_classname);
 	var chart_path = document.getElementById(chart_path_id);
-	
-	//create legend for hovered piece
-	var chart_legend = document.createElement("p");
-	chart_legend.setAttribute("id", "chart_legend");
-	chart_svg.parentNode.insertBefore(chart_legend, chart_svg);
+	var chart_legend = document.getElementById(chart_path_classname+"_legend");
 	
 	//create color swatch for legend
 	var color_swatch = document.createElement("span");
@@ -41,7 +37,8 @@ function on_hover_over_chart(chart_path_classname, chart_path_id) {
 	color_swatch.style.setProperty("height", "2em");
 	color_swatch.style.setProperty("width", "2em");
 	color_swatch.style.setProperty("background-color", chart_path.getAttribute("fill"));
-	color_swatch.style.setProperty("border", "2px solid rgb(0, 0, 0)");	
+	color_swatch.style.setProperty("border", "0.5px solid rgb(0, 0, 0)");	
+	color_swatch.style.setProperty("border-radius", "0.25px");	
 	chart_legend.appendChild(color_swatch);
 	
 	//create text for legend
@@ -75,7 +72,7 @@ chart_path_classname parameter is the classname of chart's paths
 Executes on mouse out.
 **************/
 function on_hover_off_chart(chart_path_classname) {
-	document.getElementById("chart_legend").remove(); //remove legend
+	document.getElementById(chart_path_classname+"_legend").innerHTML = ""; //remove legend
 	
 	//reset styling
 	var chart_path_elements = document.getElementsByClassName(chart_path_classname);
@@ -126,12 +123,40 @@ function create_pie_chart(pie_chart_id, filter_and_count_unique_array) {
 	var percentage_array = filter_and_count_unique_array[2];
 	
 	var pie_chart_svg = document.getElementById(pie_chart_id);
+	var chart_viewbox_object = pie_chart_svg.viewBox.baseVal;	
 	var chart_data = pie_chart_svg.getAttribute("data-chart-data");
 	
+	var chart_padding = pie_chart_svg.getAttribute("data-pie-chart-padding-decimal-percentage")*chart_viewbox_object.width;
+	var chart_legend_height = pie_chart_svg.getAttribute("data-pie-chart-legend-decimal-percentage")*chart_viewbox_object.height;
+	
+	//add text styling for chart legend
+	pie_chart_svg.innerHTML = `<style>
+	.legend_element {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.legend_element {
+		color: rgb(0, 0, 0);
+		font-size: `+0.25*(chart_viewbox_object.width/100)+`rem; <!-- font size is calculated based on the svg viewbox height -->
+		text-align: center;
+	}
+</style>`;
+	
+	//chart legend for on hover event
+	var legend_element = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+	legend_element.setAttributeNS(null, "x", chart_padding);
+	legend_element.setAttributeNS(null, "y", chart_padding);
+	legend_element.setAttributeNS(null, "width", chart_viewbox_object.width-chart_padding);
+	legend_element.setAttributeNS(null, "height", chart_legend_height);
+	pie_chart_svg.appendChild(legend_element);
+	legend_element.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" id="`+pie_chart_id+`_legend" class="legend_element"></div>`;
+	
 	//pie chart values
-	var radius = pie_chart_svg.getAttribute("data-pie-chart-r");
-	var center_x = pie_chart_svg.getAttribute("data-pie-chart-cx");
-	var center_y = pie_chart_svg.getAttribute("data-pie-chart-cy");
+	var radius = (+pie_chart_svg.getAttribute("data-pie-chart-r-decimal-percentage"))*chart_viewbox_object.width;
+	var center_x = (+pie_chart_svg.getAttribute("data-pie-chart-cx-decimal-percentage"))*chart_viewbox_object.width;
+	var center_y = ((+pie_chart_svg.getAttribute("data-pie-chart-cy-decimal-percentage"))*chart_viewbox_object.height)+chart_legend_height; //must account for legend height
 	
 	var slice_degrees = [];
 	for (i = 0; i < percentage_array.length; i++) { 
@@ -185,17 +210,23 @@ function create_horizontal_bar_chart(horizontal_bar_chart_id, filter_and_count_u
 	var chart_viewbox_object = horizontal_bar_chart_svg.viewBox.baseVal;	
 	var chart_data = horizontal_bar_chart_svg.getAttribute("data-chart-data");
 	
-	//add text styling for chart labels
+	//add text styling for chart text
 	horizontal_bar_chart_svg.innerHTML = `<style>
+	.legend_element {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
 	.x_axis_label {
 		margin: 0;
-		position:absolute;
+		position: absolute;
 		bottom: 0%;
 		left: 50%;
 		-ms-transform: translateX(-50%);
 		transform: translateX(-50%);
 	}
-	.x_axis_label_span {
+	.x_axis_label_span, .legend_element {
 		color: rgb(0, 0, 0);
 		font-size: `+0.25*(chart_viewbox_object.width/100)+`rem; <!-- font size is calculated based on the svg viewbox height -->
 		text-align: center;
@@ -223,12 +254,22 @@ function create_horizontal_bar_chart(horizontal_bar_chart_id, filter_and_count_u
 </style>`;
 	
 	var chart_padding = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-padding-decimal-percentage")*chart_viewbox_object.width;
+	var chart_legend_height = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-legend-decimal-percentage")*chart_viewbox_object.height;
 
 	//horizontal bar chart axes points
 	var x_axis_left_point = (+horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-x-axis-left-point-decimal-percentage"))*chart_viewbox_object.width;
 	var x_axis_right_point = (+horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-x-axis-right-point-decimal-percentage"))*chart_viewbox_object.width;
-	var y_axis_top_point = (+horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-y-axis-top-point-decimal-percentage"))*chart_viewbox_object.height;
+	var y_axis_top_point = ((+horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-y-axis-top-point-decimal-percentage"))*chart_viewbox_object.height)+chart_legend_height; //must account for legend height
 	var y_axis_bottom_point = (+horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-y-axis-bottom-point-decimal-percentage"))*chart_viewbox_object.height;
+
+	//chart legend for on hover event
+	var legend_element = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+	legend_element.setAttributeNS(null, "x", chart_padding);
+	legend_element.setAttributeNS(null, "y", chart_padding);
+	legend_element.setAttributeNS(null, "width", chart_viewbox_object.width-chart_padding);
+	legend_element.setAttributeNS(null, "height", chart_legend_height);
+	horizontal_bar_chart_svg.appendChild(legend_element);
+	legend_element.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" id="`+horizontal_bar_chart_id+`_legend" class="legend_element"></div>`;
 
 	//create x axis
 	var x_axis_path = document.createElementNS("http://www.w3.org/2000/svg", "path");
