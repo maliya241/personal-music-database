@@ -99,13 +99,14 @@ function filter_unique_array(sorted_array) {
 filter_and_count_unique_array takes given array that has been sorted and puts unique items into a new array and puts count of repeats of each item into another array.
 sorted_array parameter must be sorted.
 Executes as a part of page set-up in its corresponding page js file.
-Return array with array of unique items as first element and array of unique item count as second element.
+Return array with array of unique items as first element, array of unique item count as second element, array of unique item count percentages as the third element, and max count as the last element.
 **************/
 function filter_and_count_unique_array(sorted_array) {
 	var unique_array = [];
 	var count_array = [];
 	var percentage_array = [];
 	var count = 1;
+	var max_count = 0;
 	for (i = 0; i < sorted_array.length; i++) {
 		if (sorted_array[i] !== sorted_array[i+1] && sorted_array[i].length > 0) {
 			unique_array[unique_array.length] = sorted_array[i];
@@ -116,9 +117,10 @@ function filter_and_count_unique_array(sorted_array) {
 			count++;
 			count_array[unique_array.length] = count;
 			percentage_array[unique_array.length] = (100*count)/sorted_array.length;
+			max_count = Math.max(max_count, count);
 		}
 	} 
 	count_array.splice(-1); //remove last element because it does not correspond to anything
 	percentage_array.splice(-1); //remove last element because it does not correspond to anything
-	return [unique_array, count_array, percentage_array];
+	return [unique_array, count_array, percentage_array, max_count];
 }

@@ -168,3 +168,83 @@ function create_pie_chart(pie_chart_id, filter_and_count_unique_array) {
 		preceding_slice_degree_total += slice_degrees[i];
 	}	
 }
+
+/**************
+create_horizontal_bar_chart 
+horizontal_bar_chart_id parameter is the id of a svg that contains blank start of a horizontal bar chart.
+filter_and_count_unique_array parameter is the result of filter_and_count_unique_array function which is an array of arrays. First array is the sorted and filtered items. Second array is the count. Third array contains the percentages to make the pie chart slices. 
+max_count parameter is the largest count value of filter_and_count_unique_array.
+Executes as a part of page set-up in its corresponding page js file.
+**************/
+function create_horizontal_bar_chart(horizontal_bar_chart_id, filter_and_count_unique_array, max_count) {
+	var items_array = filter_and_count_unique_array[0];
+	var count_array = filter_and_count_unique_array[1];
+	var percentage_array = filter_and_count_unique_array[2];
+	
+	var horizontal_bar_chart_svg = document.getElementById(horizontal_bar_chart_id);
+	var chart_data = horizontal_bar_chart_svg.getAttribute("data-chart-data");
+	
+	//horizontal bar chart titles
+	var x_axis_title_text = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-x-axis-title");
+	var y_axis_title_text = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-y-axis-title");
+
+	//horizontal bar chart axes points
+	var x_axis_left_point = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-x-axis-left-point");
+	var x_axis_right_point = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-x-axis-right-point");
+	var y_axis_top_point = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-y-axis-top-point");
+	var y_axis_bottom_point = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-y-axis-bottom-point");
+
+	//create x axis
+	var x_axis_path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+	x_axis_path.setAttributeNS(null, "d", "M"+x_axis_left_point+" "+y_axis_top_point+" H"+x_axis_right_point);
+	x_axis_path.setAttributeNS(null, "stroke", "rgb(0, 0, 0)");
+	x_axis_path.setAttributeNS(null, "stroke-width", "0.5");
+	x_axis_path.setAttributeNS(null, "stroke-linecap", "round");
+	x_axis_path.setAttributeNS(null, "stroke-opacity", "1");
+	horizontal_bar_chart_svg.appendChild(x_axis_path);
+	
+	//create y axis
+	var y_axis_path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+	y_axis_path.setAttributeNS(null, "d", "M"+x_axis_left_point+" "+y_axis_top_point+" V"+y_axis_bottom_point);
+	y_axis_path.setAttributeNS(null, "stroke", "rgb(0, 0, 0)");
+	y_axis_path.setAttributeNS(null, "stroke-width", "0.5");
+	y_axis_path.setAttributeNS(null, "stroke-linecap", "round");
+	y_axis_path.setAttributeNS(null, "stroke-opacity", "1");
+	horizontal_bar_chart_svg.appendChild(y_axis_path);
+	
+	//calculate percentage of count from max count that is rounded up at the tens place
+	var bar_percentage_array = [];
+	var rounded_max_count = Math.ceil((+max_count)/10)*10;
+	for (i = 0; i < count_array.length; i++) {
+		bar_percentage_array[i] = count_array[i]/rounded_max_count;
+	}
+	
+	//bar math
+	var bar_interval = ((y_axis_bottom_point-y_axis_top_point)/(count_array.length*2+(count_array.length-1))); //affects y axis
+	var bar_height = bar_interval*2;
+	var bar_axis_offset = 0.25;
+	
+	var colors_array = select_chart_colors(bar_percentage_array.length);
+	
+	for (i = 0 ; i < bar_percentage_array.length; i++) {
+		var bar_end_point = (bar_percentage_array[i]*(x_axis_right_point-x_axis_left_point));//x axis point
+		var chart_path_id = horizontal_bar_chart_svg.getAttribute("id")+"_"+ items_array[i].toLowerCase().replaceAll(" ", "_");
+		
+		var horizontal_bar = document.createElementNS("http://www.w3.org/2000/svg", "path");
+		horizontal_bar.setAttributeNS(null, "d", "M"+((+x_axis_left_point)+bar_axis_offset)+" "+(((+y_axis_top_point)+bar_axis_offset)+((bar_interval+bar_height)*i))+" v"+bar_height+" h"+bar_end_point+" v-"+bar_height+" Z");
+		horizontal_bar.setAttributeNS(null, "id", chart_path_id);
+		horizontal_bar.setAttributeNS(null, "class", horizontal_bar_chart_svg.getAttribute("id"));
+		horizontal_bar.setAttributeNS(null, "data-item", items_array[i]);
+		horizontal_bar.setAttributeNS(null, "data-count", count_array[i]);
+		horizontal_bar.setAttributeNS(null, "data-percentage", Math.round(percentage_array[i]));
+		horizontal_bar.setAttributeNS(null, "fill", colors_array[i]);
+		horizontal_bar.setAttributeNS(null, "fill-opacity", "1");
+		horizontal_bar.setAttributeNS(null, "stroke", "rgb(0, 0, 0)");
+		horizontal_bar.setAttributeNS(null, "stroke-width", "0.5");
+		horizontal_bar.setAttributeNS(null, "stroke-linejoin", "round");
+		horizontal_bar.setAttributeNS(null, "stroke-opacity", "0");
+		horizontal_bar.setAttributeNS(null, "onmouseover", "on_hover_over_chart('"+horizontal_bar_chart_svg.getAttribute("id")+"', '"+chart_path_id+"')"); //send chart path classname and path id 
+		horizontal_bar.setAttributeNS(null, "onmouseout", "on_hover_off_chart('"+horizontal_bar_chart_svg.getAttribute("id")+"')"); //send chart path classname
+		horizontal_bar_chart_svg.appendChild(horizontal_bar);
+	}
+}
