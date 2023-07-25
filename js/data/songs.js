@@ -161,7 +161,7 @@ songs_object[songs_object.length] = {
 songs_object[songs_object.length] = {
 	song_title:"Death of a Hero",
 	song_album:'Narrated For You',
-	song_artist:'Benjamin Alec Benjamin',
+	song_artist:'Alec Benjamin',
 	song_duration:'03:11',
 	song_date_released:'2018-09-20',
 	song_language:'English',
@@ -171,3 +171,4 @@ songs_object[songs_object.length] = {
 	song_discovered_how:'YouTube Recommended',
 	song_year_discovered:'2020',
 }
+

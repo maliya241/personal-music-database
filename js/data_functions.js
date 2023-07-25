@@ -182,10 +182,25 @@ function create_horizontal_bar_chart(horizontal_bar_chart_id, filter_and_count_u
 	var percentage_array = filter_and_count_unique_array[2];
 	
 	var horizontal_bar_chart_svg = document.getElementById(horizontal_bar_chart_id);
+	var chart_viewbox_object = horizontal_bar_chart_svg.viewBox.baseVal;	
 	var chart_data = horizontal_bar_chart_svg.getAttribute("data-chart-data");
 	
 	//add text styling for chart labels
 	horizontal_bar_chart_svg.innerHTML = `<style>
+	.x_axis_label {
+		margin: 0;
+		position:absolute;
+		bottom: 0%;
+		left: 50%;
+		-ms-transform: translateX(-50%);
+		transform: translateX(-50%);
+	}
+	.x_axis_label_span {
+		color: rgb(0, 0, 0);
+		font-size: `+0.25*(chart_viewbox_object.width/100)+`rem; <!-- font size is calculated based on the svg viewbox height -->
+		text-align: center;
+	}
+	
 	.y_axis_label {
 		margin: 0;
 		position: absolute;
@@ -197,24 +212,23 @@ function create_horizontal_bar_chart(horizontal_bar_chart_id, filter_and_count_u
 		
 	.y_axis_label_span {
 		color: rgb(0, 0, 0);
-		font-size: 0.25rem;
+		font-size: `+0.25*(chart_viewbox_object.height/100)+`rem; <!-- font size is calculated based on the svg viewbox height -->
 		text-align: right;
 		word-wrap: break-word;
 		display: -webkit-box;
 		-webkit-line-clamp: 2; /* number of lines to show */
         line-clamp: 2; 
 		-webkit-box-orient: vertical;
-		
 	}
 </style>`;
 	
-	var chart_padding = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-padding");
+	var chart_padding = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-padding-decimal-percentage")*chart_viewbox_object.width;
 
 	//horizontal bar chart axes points
-	var x_axis_left_point = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-x-axis-left-point");
-	var x_axis_right_point = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-x-axis-right-point");
-	var y_axis_top_point = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-y-axis-top-point");
-	var y_axis_bottom_point = horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-y-axis-bottom-point");
+	var x_axis_left_point = (+horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-x-axis-left-point-decimal-percentage"))*chart_viewbox_object.width;
+	var x_axis_right_point = (+horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-x-axis-right-point-decimal-percentage"))*chart_viewbox_object.width;
+	var y_axis_top_point = (+horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-y-axis-top-point-decimal-percentage"))*chart_viewbox_object.height;
+	var y_axis_bottom_point = (+horizontal_bar_chart_svg.getAttribute("data-horizontal-bar-chart-y-axis-bottom-point-decimal-percentage"))*chart_viewbox_object.height;
 
 	//create x axis
 	var x_axis_path = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -239,6 +253,30 @@ function create_horizontal_bar_chart(horizontal_bar_chart_id, filter_and_count_u
 	var rounded_max_count = Math.ceil((+max_count)/10)*10;
 	for (i = 0; i < count_array.length; i++) {
 		bar_percentage_array[i] = count_array[i]/rounded_max_count;
+	}
+	
+	var x_axis_label_interval = rounded_max_count/4;
+	var x_axis_label_interval_point = ((x_axis_right_point-x_axis_left_point)/4);
+	
+	//create x axis labels and guides
+	for (i = 0; i < 5; i++) {
+		//create corresponding label
+		var x_axis_label = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+		x_axis_label.setAttributeNS(null, "x", (x_axis_left_point+(x_axis_label_interval_point*i))-(x_axis_label_interval_point/2));
+		x_axis_label.setAttributeNS(null, "y", chart_padding);
+		x_axis_label.setAttributeNS(null, "width", x_axis_label_interval_point);
+		x_axis_label.setAttributeNS(null, "height", y_axis_top_point-chart_padding);
+		horizontal_bar_chart_svg.appendChild(x_axis_label);
+		x_axis_label.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" class="x_axis_label"><span xmlns="http://www.w3.org/1999/xhtml" class="x_axis_label_span">`+(x_axis_label_interval*i)+`</span></div>`;
+		
+		//create x axis label guide
+		var y_axis_path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+		y_axis_path.setAttributeNS(null, "d", "M"+(x_axis_left_point+(x_axis_label_interval_point*i))+" "+y_axis_top_point+" V"+y_axis_bottom_point);
+		y_axis_path.setAttributeNS(null, "stroke", "rgba(0, 0, 0, 0.125)");
+		y_axis_path.setAttributeNS(null, "stroke-width", "0.5");
+		y_axis_path.setAttributeNS(null, "stroke-linecap", "round");
+		y_axis_path.setAttributeNS(null, "stroke-opacity", "1");
+		horizontal_bar_chart_svg.appendChild(y_axis_path);
 	}
 	
 	//bar math
