@@ -64,24 +64,8 @@ table {
 	border-spacing: 0px;
 }
 
-td {
+th, td {
 	padding: 0.5em;
-}
-
-/**************
-song table page
-**************/
-
-#songs_table_data .song_title::before {
-	content: open-quote;
-}
-
-#songs_table_data .song_title::after {
-	content: close-quote;
-}
-
-#songs_table_data .song_album {
-	font-style: italic;
 }
 
 /**************

@@ -13,7 +13,7 @@ function get_property_values(data_object, data_object_keyname) {
 					property_values[property_values.length] = data_object[i][data_object_keyname][j];
 				}
 			}
-		} else if (data_object[i][data_object_keyname].length > 0) { // checks for nonempty values
+		} else if (data_object[i][data_object_keyname].length > 0) { //checks for nonempty values
 			property_values[property_values.length] = data_object[i][data_object_keyname];
 		}
 	}
