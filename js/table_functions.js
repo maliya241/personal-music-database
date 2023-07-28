@@ -10,7 +10,7 @@ function populate_table_from_data_object(data_object) {
 		new_tr.setAttribute("id", data_object[i][data_object_keynames[0]].toLowerCase().replaceAll(" ", "_"));
 		for (j = 0; j < data_object_keynames.length; j++) { //iterates through the properties of the data object
 			if (Array.isArray(data_object[i][data_object_keynames[j]])) { //moves nonempty items into a copy of array and formats copy for readabiliy  
-					new_tr.innerHTML += `<td class="`+data_object_keynames[j]+`">`+data_object[i][data_object_keynames[j]].filter(item => item.length > 0).join(", ")+`</td>`;
+				new_tr.innerHTML += `<td class="`+data_object_keynames[j]+`">`+data_object[i][data_object_keynames[j]].filter(item => item.length > 0).join(", ")+`</td>`;
 			} else {
 				new_tr.innerHTML += `<td class="`+data_object_keynames[j]+`">`+data_object[i][data_object_keynames[j]]+`</td>`;
 			}
@@ -32,11 +32,42 @@ function populate_table_from_array_of_arrays(array_of_arrays, table_id) {
 		var new_tr = document.getElementById(id_of_table_body).appendChild(document.createElement("tr"));
 		new_tr.setAttribute("id", array_of_arrays[0][i].toLowerCase().replaceAll(" ", "_")); 
 		for (j = 0; j < array_of_arrays.length; j++) { //iterates through the array of arrays; table columns
-			var td_classname = table_id + "_" + table_th[j].innerText.toLowerCase();
+			var td_classname = table_id + "_" + table_th[j].innerText.toLowerCase().replaceAll(' ', '_');
 			new_tr.innerHTML += `<td class="`+td_classname+`">`+array_of_arrays[j][i]+`</td>`;
 		}
 	}
 
+}
+
+
+/**************
+populate_table_from_array_of_arrays_with_object_array function creates html a table row for all items in given array of arrays. 
+array_of_arrays contains arrays with table data. Each array contains data of a single column. First element contains array of objects.
+table_id is a string of the id of the table to be populated.
+Executes as a part of page set-up in its corresponding page js file.
+**************/
+function populate_table_from_array_of_arrays_with_object_array(array_of_arrays, table_id) {
+	var id_of_table_body = table_id + "_body";
+	var table_th = document.getElementById(table_id).getElementsByTagName("th");
+	for (i = 0; i < array_of_arrays[0].length; i++) { //iterates through the array in the array of arrays; each array in the array of arrays should be the same length; table rows
+		var new_tr = document.getElementById(id_of_table_body).appendChild(document.createElement("tr"));
+		new_tr.setAttribute("id", Object.values(array_of_arrays[0][i]).join("_").toLowerCase().replaceAll(" ", "_")); 
+		var table_column = 0;
+		for (j = 0; j < array_of_arrays.length; j++) { //iterates through the array of arrays; table columns
+			if (typeof(array_of_arrays[j][i]) === "object") {
+				var object_keynames_array = Object.keys(array_of_arrays[j][i]);
+				for (k = 0; k < object_keynames_array.length; k++) { //iterate through object; k represents the index of the object property names
+					var td_classname = table_id + "_" + table_th[table_column].innerText.toLowerCase().replaceAll(' ', '_');
+					new_tr.innerHTML += `<td class="`+td_classname+`">`+array_of_arrays[j][i][object_keynames_array[k]]+`</td>`;
+					table_column++;
+				}
+			} else {
+				var td_classname = table_id + "_" + table_th[table_column].innerText.toLowerCase().replaceAll(' ', '_');
+				new_tr.innerHTML += `<td class="`+td_classname+`">`+array_of_arrays[j][i]+`</td>`;
+				table_column++;
+			}
+		}
+	}
 }
 
 /**************
@@ -52,7 +83,6 @@ function search_items_table() {
 	// Loop through all tbody table rows, and hide those who don't match the search query
 	for (i = 0; i < tr.length; i++) {
 		text_value = tr[i].textContent || tr[i].innerText;
-		console.log(text_value);
 		if (text_value.toUpperCase().indexOf(filter) > -1) {
 			tr[i].style.display = "";
 		} else {
