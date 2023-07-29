@@ -3,6 +3,7 @@ get_property_values function gets the nonempty value of a given property from a 
 data_object parameter is the name of an object. Not a string.
 data_object_keyname parameter takes a string of a key name in an object.
 Executes as a part of page set-up in its corresponding page js file.
+Returns an array of property values.
 **************/
 function get_property_values(data_object, data_object_keyname) {
 	var property_values = [];
@@ -18,6 +19,54 @@ function get_property_values(data_object, data_object_keyname) {
 		}
 	}
 	return property_values;
+}
+
+/**************
+get_multiple_property_values function makes a new object array filled with properties and values from a given object and an array of given keynames.
+data_object parameter is the name of an object. Not a string.
+data_object_keyname_array parameter is a string of property names in object.
+Executes as a part of page set-up in its corresponding page js file.
+Returns an array of objects.
+**************/
+function get_and_expand_multiple_property_values(data_object, data_object_keyname_array) {
+	var given_properties_object_array = [];
+
+	//put only given property names into a new object array
+	for (i = 0; i < data_object.length; i++) { //iterates through the data object
+		var object_index = given_properties_object_array.length;
+		var temporary_data_object = {};
+		for (j = 0; j < data_object_keyname_array.length; j++) { //iterate through keyname array		
+			var property_name = data_object_keyname_array[j];
+			given_properties_object_array[object_index] = temporary_data_object; 
+			given_properties_object_array[object_index][property_name] = data_object[i][property_name];
+		}
+	}	
+	
+	var given_properties_object_array_length = given_properties_object_array.length;
+	
+	for (i = 0; i < given_properties_object_array_length; i++) { //iterates through the data object
+		var object_index = given_properties_object_array.length;
+		var temporary_data_object = {};
+		for (j = 0; j < data_object_keyname_array.length; j++) { //iterate through keyname array
+			var property_name = data_object_keyname_array[j];
+			
+			if (Array.isArray(given_properties_object_array[i][property_name])) { 
+				for (k = 1; k < given_properties_object_array[i][property_name].length; k++) { //iterate through property value array
+					if (given_properties_object_array[i][property_name][k].length > 0) {
+						object_index = given_properties_object_array.length;
+						given_properties_object_array[object_index] = temporary_data_object; 
+						Object.assign(given_properties_object_array[object_index], given_properties_object_array[i]);						
+						given_properties_object_array[object_index][property_name] = given_properties_object_array[i][property_name][k];
+					}
+				}
+				if (given_properties_object_array[i][property_name][0].length > 0) {
+					given_properties_object_array[i][property_name] = given_properties_object_array[i][property_name][0];
+				}
+			} 
+		}
+	}	
+	
+	return given_properties_object_array;
 }
 
 /**************

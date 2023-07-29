@@ -63,7 +63,7 @@ songs_object[songs_object.length] = {
 songs_object[songs_object.length] = {
 	song_title:"Hero",
 	song_album:'Searchlights',
-	song_artist:'Abandon',
+	song_artist:['Abandon', 'bgfd'],
 	song_duration:'03:44',
 	song_date_released:'2009-08-25',
 	song_language:'English',
@@ -77,7 +77,7 @@ songs_object[songs_object.length] = {
 songs_object[songs_object.length] = {
 	song_title:"It's On Us",
 	song_album:'AJR',
-	song_artist:'AJR',
+	song_artist:['AJR', 'ewrgtr'],
 	song_duration:'03:26',
 	song_date_released:'2017-03-31',
 	song_language:'English',

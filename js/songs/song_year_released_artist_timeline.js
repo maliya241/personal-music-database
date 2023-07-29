@@ -1,11 +1,13 @@
 
 add_color_selectors_html_elements("year_released_artist_timeline_chart_color_selectors", "song_year_released_artist_timeline", "year_released_artist_timeline_chart");
 
+const song_expanded_multiple_properties_object_array = get_and_expand_multiple_property_values(songs_object, ['song_artist', 'song_date_released']);
+
 const song_year_released_artist_array_of_objects = [];
-for (i = 0; i < songs_object.length; i++) {
-	const date = new Date(songs_object[i].song_date_released);
+for (i = 0; i < song_expanded_multiple_properties_object_array.length; i++) {
+	const date = new Date(song_expanded_multiple_properties_object_array[i].song_date_released);
 	song_year_released_artist_array_of_objects[song_year_released_artist_array_of_objects.length] = {
-		artist: songs_object[i].song_artist,
+		artist: song_expanded_multiple_properties_object_array[i].song_artist,
 		year_released: date.getFullYear().toString()
 	}
 }
