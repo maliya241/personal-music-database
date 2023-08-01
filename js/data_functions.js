@@ -161,7 +161,7 @@ function describe_circle_sector(x, y, radius, start_angle, end_angle){
 }
 
 /**************
-create_pie_chart adds path svg elements that represents the percentage data of a given array. 
+create_pie_chart adds svg path elements that represents the percentage data of a given array. 
 pie_chart_id parameter is the id of a svg that contains blank start of a pie chart.
 filter_and_count_unique_array parameter is the result of filter_and_count_unique_array function which is an array of arrays. First array is the sorted and filtered items. Second array is the count. Third array contains the percentages to make the pie chart slices. 
 Executes as a part of page set-up in its corresponding page js file.
@@ -244,7 +244,7 @@ function create_pie_chart(pie_chart_id, filter_and_count_unique_array) {
 }
 
 /**************
-create_horizontal_bar_chart 
+create_horizontal_bar_chart adds svg path elements that represents data and a percentage of the max count that has been rounded up the nearest tens. 
 horizontal_bar_chart_id parameter is the id of a svg that contains blank start of a horizontal bar chart.
 filter_and_count_unique_array parameter is the result of filter_and_count_unique_array function which is an array of arrays. First array is the sorted and filtered items. Second array is the count. Third array contains the percentages to make the pie chart slices. 
 max_count parameter is the largest count value of filter_and_count_unique_array.
@@ -345,11 +345,12 @@ function create_horizontal_bar_chart(horizontal_bar_chart_id, filter_and_count_u
 		bar_percentage_array[i] = count_array[i]/rounded_max_count;
 	}
 	
-	var x_axis_label_interval = rounded_max_count/4;
-	var x_axis_label_interval_point = ((x_axis_right_point-x_axis_left_point)/4);
+	var number_of_intervals_minus_first = 4; //minus first because it is 0
+	var x_axis_label_interval = rounded_max_count/number_of_intervals_minus_first;
+	var x_axis_label_interval_point = ((x_axis_right_point-x_axis_left_point)/number_of_intervals_minus_first);
 	
 	//create x axis labels and guides
-	for (i = 0; i < 5; i++) {
+	for (i = 0; i < (number_of_intervals_minus_first+1); i++) {
 		//create corresponding label
 		var x_axis_label = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
 		x_axis_label.setAttributeNS(null, "x", (x_axis_left_point+(x_axis_label_interval_point*i))-(x_axis_label_interval_point/2));
@@ -378,6 +379,7 @@ function create_horizontal_bar_chart(horizontal_bar_chart_id, filter_and_count_u
 	
 	var colors_array = select_chart_colors(bar_percentage_array.length);
 	
+	//populate chart with horizontal bars
 	for (i = 0 ; i < bar_percentage_array.length; i++) {
 		var bar_end_point = (bar_percentage_array[i]*(x_axis_right_point-x_axis_left_point));//x axis point
 		var chart_path_id = horizontal_bar_chart_svg.getAttribute("id")+"_"+ items_array[i].toLowerCase().replaceAll(" ", "_");
@@ -411,4 +413,176 @@ function create_horizontal_bar_chart(horizontal_bar_chart_id, filter_and_count_u
 		horizontal_bar_chart_svg.appendChild(horizontal_bar_label);
 		horizontal_bar_label.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" class="y_axis_label"><span xmlns="http://www.w3.org/1999/xhtml" class="y_axis_label_span">`+items_array[i]+`</span></div>`;
 	}
+}
+
+/**************
+create_timeline_horizontal_bar_chart adds svg path elements that represents the data and the datetime value for the timeline. 
+timeline_horizontal_bar_chart_id parameter is the id of a svg that contains blank start of a horizontal bar chart.
+filter_and_count_unique_array parameter is the result of filter_and_count_unique_array function which is an array of arrays. 
+	First array contains the sorted and filtered objects. 
+		First property should be values for the y axis.
+		Second property should be values for the x axis (datetime values).
+	Second array is the count. 
+	Third array contains the percentages to make the pie chart slices. 
+max_count parameter is the largest count value of filter_and_count_unique_array.
+Executes as a part of page set-up in its corresponding page js file.
+**************/
+function create_timeline_horizontal_bar_chart(timeline_horizontal_bar_chart_id, filter_and_count_unique_array, max_count) {
+	var items_array_of_objects = filter_and_count_unique_array[0];
+	var items_object_property_names = Object.keys(items_array_of_objects[0]);
+	var count_array = filter_and_count_unique_array[1];
+	var percentage_array = filter_and_count_unique_array[2];
+	
+	var timeline_horizontal_bar_chart_svg = document.getElementById(timeline_horizontal_bar_chart_id);
+	var chart_viewbox_object = timeline_horizontal_bar_chart_svg.viewBox.baseVal;	
+	var chart_data = timeline_horizontal_bar_chart_svg.getAttribute("data-chart-data");
+	
+	//add text styling for chart text
+	timeline_horizontal_bar_chart_svg.innerHTML = `<style>
+	.legend_element {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.x_axis_label {
+		margin: 0;
+		position: absolute;
+		bottom: 0%;
+		left: 50%;
+		-ms-transform: translateX(-50%);
+		transform: translateX(-50%);
+	}
+	
+	.x_axis_label_span, .legend_element {
+		color: rgb(0, 0, 0);
+		font-size: `+0.25*(chart_viewbox_object.width/100)+`rem; <!-- font size is calculated based on the svg viewbox height -->
+		text-align: center;
+	}
+	
+	.y_axis_label_span {
+		display: block;
+		margin: auto 0;
+		color: rgb(0, 0, 0);
+		font-size: `+0.25*(chart_viewbox_object.height/100)+`rem; <!-- font size is calculated based on the svg viewbox height -->
+		text-align: right;
+		word-wrap: break-word;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		
+	}
+</style>`;
+	
+	var chart_padding = timeline_horizontal_bar_chart_svg.getAttribute("data-timeline-horizontal-bar-chart-padding-decimal-percentage")*chart_viewbox_object.width;
+	var chart_legend_height = timeline_horizontal_bar_chart_svg.getAttribute("data-timeline-horizontal-bar-chart-legend-decimal-percentage")*chart_viewbox_object.height;
+
+	//timeline horizontal bar chart axes points
+	var x_axis_left_point = (+timeline_horizontal_bar_chart_svg.getAttribute("data-timeline-horizontal-bar-chart-x-axis-left-point-decimal-percentage"))*chart_viewbox_object.width;
+	var x_axis_right_point = (+timeline_horizontal_bar_chart_svg.getAttribute("data-timeline-horizontal-bar-chart-x-axis-right-point-decimal-percentage"))*chart_viewbox_object.width;
+	var y_axis_top_point = ((+timeline_horizontal_bar_chart_svg.getAttribute("data-timeline-horizontal-bar-chart-y-axis-top-point-decimal-percentage"))*chart_viewbox_object.height)+chart_legend_height; //must account for legend height
+	var y_axis_bottom_point = (+timeline_horizontal_bar_chart_svg.getAttribute("data-timeline-horizontal-bar-chart-y-axis-bottom-point-decimal-percentage"))*chart_viewbox_object.height;
+
+	//chart legend for on hover event
+	var legend_element = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+	legend_element.setAttributeNS(null, "x", chart_padding);
+	legend_element.setAttributeNS(null, "y", chart_padding);
+	legend_element.setAttributeNS(null, "width", chart_viewbox_object.width-chart_padding);
+	legend_element.setAttributeNS(null, "height", chart_legend_height);
+	timeline_horizontal_bar_chart_svg.appendChild(legend_element);
+	legend_element.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" id="`+timeline_horizontal_bar_chart_id+`_legend" class="legend_element"></div>`;
+	
+	//find min and max years
+	var min_year = items_array_of_objects[0][items_object_property_names[1]]; //first object year
+	var max_year = items_array_of_objects[0][items_object_property_names[1]]; //first object year
+	for (i = 0; i < items_array_of_objects.length; i++) {
+		min_year = Math.min((+items_array_of_objects[i][items_object_property_names[1]]), min_year);
+		max_year = Math.max((+items_array_of_objects[i][items_object_property_names[1]]), max_year);
+	}	
+	
+	var number_of_intervals_minus_first = 6; //including the first value
+	var year_range = (+max_year)-(+min_year);
+	var x_axis_label_interval = Math.ceil(Math.max(year_range, number_of_intervals_minus_first)/number_of_intervals_minus_first);
+	if ((min_year+(x_axis_label_interval*number_of_intervals_minus_first)) < max_year) { //makes sure the max year is included in the chart interval range
+		x_axis_label_interval = x_axis_label_interval+1;
+	}
+	var x_axis_label_interval_point = ((x_axis_right_point-x_axis_left_point)/number_of_intervals_minus_first);	
+	var x_axis_label_min_year = (min_year-(x_axis_label_interval));
+	var x_axis_label_max_year = (min_year+(x_axis_label_interval*(number_of_intervals_minus_first-1)));
+
+	//create the rest of the x axis labels and guides
+	for (i = -1; i < number_of_intervals_minus_first; i++) { 
+		//create corresponding label
+		var x_axis_label = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+		x_axis_label.setAttributeNS(null, "x", (x_axis_left_point+(x_axis_label_interval_point*(i+1)))-(x_axis_label_interval_point/2));
+		x_axis_label.setAttributeNS(null, "y", chart_padding);
+		x_axis_label.setAttributeNS(null, "width", x_axis_label_interval_point);
+		x_axis_label.setAttributeNS(null, "height", y_axis_top_point-chart_padding);
+		timeline_horizontal_bar_chart_svg.appendChild(x_axis_label);
+		x_axis_label.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" class="x_axis_label"><span xmlns="http://www.w3.org/1999/xhtml" class="x_axis_label_span">`+(min_year+(i*x_axis_label_interval))+`</span></div>`;
+		
+		//create x axis label guide
+		var y_axis_path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+		y_axis_path.setAttributeNS(null, "d", "M"+(x_axis_left_point+(x_axis_label_interval_point*(i+1)))+" "+y_axis_top_point+" V"+y_axis_bottom_point);
+		y_axis_path.setAttributeNS(null, "stroke", "rgba(0, 0, 0, 0.125)");
+		y_axis_path.setAttributeNS(null, "stroke-width", "0.5");
+		y_axis_path.setAttributeNS(null, "stroke-linecap", "round");
+		y_axis_path.setAttributeNS(null, "stroke-opacity", "1");
+		timeline_horizontal_bar_chart_svg.appendChild(y_axis_path);
+	}
+	
+	//y axis labels
+	var y_axis_label_array = [];
+	for (i = 0; i < (items_array_of_objects.length-1); i++) { 
+		if (items_array_of_objects[i][items_object_property_names[0]] !== items_array_of_objects[i+1][items_object_property_names[0]] && items_array_of_objects[i][items_object_property_names[0]].length > 0) { //filter out unique
+			y_axis_label_array[y_axis_label_array.length] = items_array_of_objects[i][items_object_property_names[0]];
+		}
+	}
+	y_axis_label_array[y_axis_label_array.length] = items_array_of_objects[items_array_of_objects.length-1][items_object_property_names[0]]; //add last object property
+	
+	//bar math
+	var bar_width = 1/(x_axis_label_max_year-x_axis_label_min_year);
+	var bar_interval = ((y_axis_bottom_point-y_axis_top_point)/(y_axis_label_array.length*2+(y_axis_label_array.length-1))); //affects y axis
+	var bar_height = bar_interval*2;
+	var bar_axis_offset = 0.25;
+	var label_axis_offset = 5*bar_axis_offset;
+	var bar_label_max_width = (+x_axis_left_point)-(+chart_padding);
+	
+	var colors_array = select_chart_colors(items_array_of_objects.length);
+
+	//populate timeline chart with horizontal bars
+	for (i = 0 ; i < items_array_of_objects.length; i++) {
+		var chart_path_id = timeline_horizontal_bar_chart_svg.getAttribute("id")+"_"+ Object.values(items_array_of_objects[i]).join("_").toLowerCase().replaceAll(" ", "_");
+		var bar_end_point = (bar_width*(x_axis_right_point-x_axis_left_point));//x axis end point
+		var x = (+x_axis_left_point)+((items_array_of_objects[i][items_object_property_names[1]] - x_axis_label_min_year)*bar_end_point);
+		var y = ((+y_axis_top_point)+((bar_interval+bar_height)*y_axis_label_array.indexOf(items_array_of_objects[i][items_object_property_names[0]])));
+		
+		//create horizontal bar
+		var timeline_horizontal_bar = document.createElementNS("http://www.w3.org/2000/svg", "path");
+		timeline_horizontal_bar.setAttributeNS(null, "d", "M"+x+" "+y+" v"+bar_height+" h"+bar_end_point+" v-"+bar_height+" Z");
+		timeline_horizontal_bar.setAttributeNS(null, "id", chart_path_id);
+		timeline_horizontal_bar.setAttributeNS(null, "class", timeline_horizontal_bar_chart_svg.getAttribute("id"));
+		timeline_horizontal_bar.setAttributeNS(null, "data-item", Object.values(items_array_of_objects[i]).join(" "));
+		timeline_horizontal_bar.setAttributeNS(null, "data-count", count_array[i]);
+		timeline_horizontal_bar.setAttributeNS(null, "data-percentage", Math.round(percentage_array[i]));
+		timeline_horizontal_bar.setAttributeNS(null, "fill", colors_array[i]);
+		timeline_horizontal_bar.setAttributeNS(null, "fill-opacity", "1");
+		timeline_horizontal_bar.setAttributeNS(null, "stroke", "rgb(0, 0, 0)");
+		timeline_horizontal_bar.setAttributeNS(null, "stroke-width", "0.5");
+		timeline_horizontal_bar.setAttributeNS(null, "stroke-linejoin", "round");
+		timeline_horizontal_bar.setAttributeNS(null, "stroke-opacity", "0");
+		timeline_horizontal_bar.setAttributeNS(null, "onmouseover", "on_hover_over_chart('"+timeline_horizontal_bar_chart_svg.getAttribute("id")+"', '"+chart_path_id+"')"); //send chart path classname and path id 
+		timeline_horizontal_bar.setAttributeNS(null, "onmouseout", "on_hover_off_chart('"+timeline_horizontal_bar_chart_svg.getAttribute("id")+"')"); //send chart path classname
+		timeline_horizontal_bar_chart_svg.appendChild(timeline_horizontal_bar);
+		
+		//create corresponding label
+		var timeline_horizontal_bar_label = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+		timeline_horizontal_bar_label.setAttributeNS(null, "x", ((+x_axis_left_point)-(label_axis_offset+bar_label_max_width)));
+		timeline_horizontal_bar_label.setAttributeNS(null, "y", y);
+		timeline_horizontal_bar_label.setAttributeNS(null, "width", bar_label_max_width);
+		timeline_horizontal_bar_label.setAttributeNS(null, "height", bar_height);timeline_horizontal_bar_label.setAttributeNS(null, "class", "y_axis_label_foreign_object");
+		timeline_horizontal_bar_chart_svg.appendChild(timeline_horizontal_bar_label);
+		timeline_horizontal_bar_label.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" class="y_axis_label" width="`+window.getComputedStyle(document.getElementsByClassName("y_axis_label_foreign_object")[i]).getPropertyValue("width")+`" height="`+window.getComputedStyle(document.getElementsByClassName("y_axis_label_foreign_object")[i]).getPropertyValue("height")+`" style="line-height: `+window.getComputedStyle(document.getElementsByClassName("y_axis_label_foreign_object")[i]).getPropertyValue("height")+`;"><span xmlns="http://www.w3.org/1999/xhtml" class="y_axis_label_span">`+items_array_of_objects[i][items_object_property_names[0]]+`</span></div>`;
+	}
+	
 }

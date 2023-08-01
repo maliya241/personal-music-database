@@ -1,5 +1,5 @@
 
-add_color_selectors_html_elements("year_released_artist_timeline_chart_color_selectors", "song_year_released_artist_timeline", "year_released_artist_timeline_chart");
+add_color_selectors_html_elements("year_released_artist_timeline_horizontal_bar_chart_color_selectors", "song_year_released_artist_timeline", "year_released_artist_timeline_horizontal_bar_chart");
 
 const song_expanded_multiple_properties_object_array = get_and_expand_multiple_property_values(songs_object, ['song_artist', 'song_date_released']);
 
@@ -18,4 +18,4 @@ var max_count = unique_years_released_artists_and_count_array.pop();
 
 populate_table_from_array_of_arrays_with_object_array(unique_years_released_artists_and_count_array, "song_year_released_artist_timeline_table");
 
-// create_timeline_horizontal_bar_chart("year_released_artist_timeline_chart", unique_years_released_artists_and_count_array, max_count);
+create_timeline_horizontal_bar_chart("year_released_artist_timeline_horizontal_bar_chart", unique_years_released_artists_and_count_array, max_count);
