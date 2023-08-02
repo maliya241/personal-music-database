@@ -1,3 +1,5 @@
+console.log(window.location.pathname);
+
 document.getElementById("nav").innerHTML = `<a href="index.html" tabindex="0">Home</a>
 	<div class="nav_dropdown">
 		<button type="button" class="nav_dropdown_button" tabindex="0" onclick="toggle_dropdown_display('nav_dropdown_songs')"><a href="songs.html" tabindex="0">Songs</a></button>

@@ -584,5 +584,4 @@ function create_timeline_horizontal_bar_chart(timeline_horizontal_bar_chart_id, 
 		timeline_horizontal_bar_chart_svg.appendChild(timeline_horizontal_bar_label);
 		timeline_horizontal_bar_label.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" class="y_axis_label" width="`+window.getComputedStyle(document.getElementsByClassName("y_axis_label_foreign_object")[i]).getPropertyValue("width")+`" height="`+window.getComputedStyle(document.getElementsByClassName("y_axis_label_foreign_object")[i]).getPropertyValue("height")+`" style="line-height: `+window.getComputedStyle(document.getElementsByClassName("y_axis_label_foreign_object")[i]).getPropertyValue("height")+`;"><span xmlns="http://www.w3.org/1999/xhtml" class="y_axis_label_span">`+items_array_of_objects[i][items_object_property_names[0]]+`</span></div>`;
 	}
-	
 }
