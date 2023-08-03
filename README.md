@@ -1,7 +1,7 @@
 # Personal Music Database
 
 ## Introduction
-This project stores and displays music data given by the user. This project explores storing and manipulating data and creating dynamic websites with Javscript.
+This project stores and displays music data given by the user. This project explores storing and manipulating data and creating dynamic webpages with Javscript.
 
 ## Technologies
 This project is created with: 
