@@ -14,21 +14,28 @@
 		</nav>
 		
 		<h1>Music Database</h1>
-		<div id="songs">
+		<div id="song_pages">
 			<h2>Songs</h2>
-			<a href="song_form.html">Song Form</a>
-			<a href="songs_table.html">Songs Table</a>
-			<br>
-			<a href="song_artist_data_analytics.html">Song Artist Data Analytics</a>
-			<a href="song_year_released_data_analytics.html">Song Year Released Data Analytics</a>
-			<a href="song_pages/song_artist_year_released_timeline.html">Song Artist Year Released Timeline</a>
+			<a href="song_pages/song_form.html">Song Form</a>
+			<a href="song_pages/songs_table.html">Songs Table</a>
+			<div id="song_data_analytics_pages">
+				<a href="song_pages/song_data_analytics_pages/song_artist_data_analytics.html">Song Artist Data Analytics</a>
+				<a href="song_pages/song_data_analytics_pages/song_date_released_data_analytics.html">Song Date Released Data Analytics</a>
+			</div>
+			<div id="song_chart_pages">
+				<a href="song_pages/song_chart_pages/song_artist_count_pie_chart.html">Song Artist Count Pie Chart</a>
+				<a href="song_pages/song_chart_pages/song_year_released_count_horizontal_bar_chart.html">Song Year Released Count Horizontal Bar Chart</a>
+				<a href="song_pages/song_chart_pages/song_artist_year_released_timeline.html">Song Artist Year Released Timeline</a>
+			</div>
 		</div>
 		
 		<footer id="footer">
 		</footer>
 		<div id="scripts">
+			<script src="js/data/page_directory.js"></script>
+			<script src="js/page_directory_functions.js"></script>
 			<script src="js/nav_and_footer.js"></script>
-			<script src="js/main.js"></script>
+			<script src="js/index.js"></script>
 		</div>
 	</body>				
 </html>

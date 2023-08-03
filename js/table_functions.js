@@ -39,7 +39,6 @@ function populate_table_from_array_of_arrays(array_of_arrays, table_id) {
 
 }
 
-
 /**************
 populate_table_from_array_of_arrays_with_object_array function creates html a table row for all items in given array of arrays. 
 array_of_arrays contains arrays with table data. Each array contains data of a single column. First element contains array of objects.
@@ -90,7 +89,6 @@ function search_items_table() {
 		}
 	}
 }
-
 
 /**************
 toggle_hide function hides all elements with its given classname and turns its corresponging button grey when the button is pressed; default display is visible.

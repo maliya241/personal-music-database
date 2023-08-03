@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<title>Song Year Released Data Analytics</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="../../css/main.css">
+		<link rel="stylesheet" type="text/css" href="../../css/responsive.css">
+		<meta name="keywords" content="">
+		<meta name="description" content="">
+	</head>
+	<body>
+		<nav id="nav">
+		</nav>
+		
+		<h1>Song Year Released Data Analytics</h1>
+		
+		<div id="year_released_horizontal_bar_chart_color_selectors">
+		</div>
+		
+		<figure>
+			<figcaption><h2>Year Released Count</h2></figcaption>
+			<svg width="100%" height="100%" viewBox="0 0 100 120" class="horizontal_bar_chart chart year_released_horizontal_bar_chart" id="year_released_horizontal_bar_chart" data-chart-data="song_year_released_data_analytics"data-horizontal-bar-chart-padding-decimal-percentage="0.05" data-horizontal-bar-chart-legend-decimal-percentage="0.1" data-horizontal-bar-chart-x-axis-left-point-decimal-percentage="0.25" data-horizontal-bar-chart-x-axis-right-point-decimal-percentage="0.9" data-horizontal-bar-chart-y-axis-top-point-decimal-percentage="0.15"data-horizontal-bar-chart-y-axis-bottom-point-decimal-percentage="0.95">
+			</svg>
+			<table id="song_year_released_data_analytics_table">
+				<thead>
+					<th class="song_year_released_data_analytics_year_released" onclick="sort_table('song_year_released_data_analytics_table_body', 'song_year_released_data_analytics_table_year_released')">Year Released</th>
+					<th class="song_year_released_data_analytics_year_released_count" onclick="sort_table('song_year_released_data_analytics_table_body', 'song_year_released_data_analytics_table_count')">Count</th>
+					<th class="song_year_released_data_analytics_year_released_percentage" onclick="sort_table('song_year_released_data_analytics_table_body', 'song_year_released_data_analytics_table_percentage')">Percentage</th>
+				</thead>
+				<tbody id="song_year_released_data_analytics_table_body">
+				</tbody>
+			</table>
+		</figure>
+		
+		
+		<footer id="footer">
+		</footer>
+		<div id="scripts">
+			<script src="../../js/data/page_directory.js"></script>
+			<script src="../../js/page_directory_functions.js"></script>
+			<script src="../../js/nav_and_footer.js"></script>
+			<script src="../../js/data/songs.js"></script>
+			<script src="../../js/color_functions.js"></script>
+			<script src="../../js/table_functions.js"></script>
+			<script src="../../js/data_functions.js"></script>
+			<script src="../../js/sort_and_filter_functions.js"></script>
+			<script src="../../js/songs/song_date_released_data_analytics.js"></script>
+		</div>
+	</body>				
+</html>
