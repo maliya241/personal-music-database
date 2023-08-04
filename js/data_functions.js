@@ -445,18 +445,15 @@ function create_timeline_horizontal_bar_chart(timeline_horizontal_bar_chart_id, 
 		align-items: center;
 	}
 	
-	.x_axis_label {
-		margin: 0;
-		position: absolute;
-		bottom: 0%;
-		left: 50%;
-		-ms-transform: translateX(-50%);
-		transform: translateX(-50%);
+	.x_axis_label_span {
+		display: block;
+		margin: auto;
+		text-align: center;
 	}
 	
 	.x_axis_label_span, .legend_element {
 		color: rgb(0, 0, 0);
-		font-size: `+0.25*(chart_viewbox_object.width/100)+`rem; <!-- font size is calculated based on the svg viewbox height -->
+		font-size: `+0.25*(chart_viewbox_object.width/100)+`rem; <!-- font size is calculated based on the svg viewbox width -->
 		text-align: center;
 	}
 	
@@ -500,30 +497,32 @@ function create_timeline_horizontal_bar_chart(timeline_horizontal_bar_chart_id, 
 		max_year = Math.max((+items_array_of_objects[i][items_object_property_names[1]]), max_year);
 	}	
 	
-	var number_of_intervals_minus_first = 6; //including the first value
+	var number_of_interval_labels = 7; 
+	var number_of_intervals = number_of_interval_labels-1; //gaps
 	var year_range = (+max_year)-(+min_year);
-	var x_axis_label_interval = Math.ceil(Math.max(year_range, number_of_intervals_minus_first)/number_of_intervals_minus_first);
-	if ((min_year+(x_axis_label_interval*number_of_intervals_minus_first)) < max_year) { //makes sure the max year is included in the chart interval range
+	var x_axis_label_interval = Math.ceil(Math.max(year_range, number_of_interval_labels)/number_of_interval_labels);
+	if ((min_year+(x_axis_label_interval*number_of_intervals)) < max_year) { //makes sure the max year is included in the chart interval range
 		x_axis_label_interval = x_axis_label_interval+1;
 	}
-	var x_axis_label_interval_point = ((x_axis_right_point-x_axis_left_point)/number_of_intervals_minus_first);	
-	var x_axis_label_min_year = (min_year-(x_axis_label_interval));
-	var x_axis_label_max_year = (min_year+(x_axis_label_interval*(number_of_intervals_minus_first-1)));
-
-	//create the rest of the x axis labels and guides
-	for (i = -1; i < number_of_intervals_minus_first; i++) { 
+	var x_axis_label_interval_point = ((x_axis_right_point-x_axis_left_point)/number_of_intervals);	
+	var x_axis_label_min_year = min_year;
+	var x_axis_label_max_year = (min_year+(x_axis_label_interval*(number_of_intervals)));
+	//create the x axis labels and guides
+	for (i = 0; i < number_of_interval_labels; i++) { 
 		//create corresponding label
 		var x_axis_label = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
-		x_axis_label.setAttributeNS(null, "x", (x_axis_left_point+(x_axis_label_interval_point*(i+1)))-(x_axis_label_interval_point/2));
-		x_axis_label.setAttributeNS(null, "y", chart_padding);
+		x_axis_label.setAttributeNS(null, "x", (x_axis_left_point+(x_axis_label_interval_point*(i)))-(x_axis_label_interval_point/2));
+		x_axis_label.setAttributeNS(null, "y", y_axis_bottom_point);
 		x_axis_label.setAttributeNS(null, "width", x_axis_label_interval_point);
 		x_axis_label.setAttributeNS(null, "height", y_axis_top_point-chart_padding);
 		timeline_horizontal_bar_chart_svg.appendChild(x_axis_label);
-		x_axis_label.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" class="x_axis_label"><span xmlns="http://www.w3.org/1999/xhtml" class="x_axis_label_span">`+(min_year+(i*x_axis_label_interval))+`</span></div>`;
+		
+		var computed_height = document.defaultView.getComputedStyle(x_axis_label).getPropertyValue("height");
+		x_axis_label.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" class="x_axis_label" width="`+window.getComputedStyle(x_axis_label).getPropertyValue("width")+`" height="`+computed_height+`" style="line-height: `+computed_height+`;"><span xmlns="http://www.w3.org/1999/xhtml" class="x_axis_label_span">`+(min_year+(i*x_axis_label_interval))+`</span></div>`;
 		
 		//create x axis label guide
 		var y_axis_path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-		y_axis_path.setAttributeNS(null, "d", "M"+(x_axis_left_point+(x_axis_label_interval_point*(i+1)))+" "+y_axis_top_point+" V"+y_axis_bottom_point);
+		y_axis_path.setAttributeNS(null, "d", "M"+(x_axis_left_point+(x_axis_label_interval_point*(i)))+" "+y_axis_top_point+" V"+y_axis_bottom_point);
 		y_axis_path.setAttributeNS(null, "stroke", "rgba(0, 0, 0, 0.125)");
 		y_axis_path.setAttributeNS(null, "stroke-width", "0.5");
 		y_axis_path.setAttributeNS(null, "stroke-linecap", "round");
@@ -580,8 +579,9 @@ function create_timeline_horizontal_bar_chart(timeline_horizontal_bar_chart_id, 
 		timeline_horizontal_bar_label.setAttributeNS(null, "x", ((+x_axis_left_point)-(label_axis_offset+bar_label_max_width)));
 		timeline_horizontal_bar_label.setAttributeNS(null, "y", y);
 		timeline_horizontal_bar_label.setAttributeNS(null, "width", bar_label_max_width);
-		timeline_horizontal_bar_label.setAttributeNS(null, "height", bar_height);timeline_horizontal_bar_label.setAttributeNS(null, "class", "y_axis_label_foreign_object");
+		timeline_horizontal_bar_label.setAttributeNS(null, "height", bar_height);
 		timeline_horizontal_bar_chart_svg.appendChild(timeline_horizontal_bar_label);
-		timeline_horizontal_bar_label.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" class="y_axis_label" width="`+window.getComputedStyle(document.getElementsByClassName("y_axis_label_foreign_object")[i]).getPropertyValue("width")+`" height="`+window.getComputedStyle(document.getElementsByClassName("y_axis_label_foreign_object")[i]).getPropertyValue("height")+`" style="line-height: `+window.getComputedStyle(document.getElementsByClassName("y_axis_label_foreign_object")[i]).getPropertyValue("height")+`;"><span xmlns="http://www.w3.org/1999/xhtml" class="y_axis_label_span">`+items_array_of_objects[i][items_object_property_names[0]]+`</span></div>`;
+		var computed_height = document.defaultView.getComputedStyle(timeline_horizontal_bar_label).getPropertyValue("height");
+		timeline_horizontal_bar_label.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" class="y_axis_label" width="`+window.getComputedStyle(timeline_horizontal_bar_label).getPropertyValue("width")+`" height="`+computed_height+`" style="line-height: `+computed_height+`;"><span xmlns="http://www.w3.org/1999/xhtml" class="y_axis_label_span">`+items_array_of_objects[i][items_object_property_names[0]]+`</span></div>`;
 	}
 }
