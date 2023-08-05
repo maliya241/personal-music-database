@@ -8,7 +8,7 @@ var table_song_date_released = document.getElementById(table_body_id).getElement
 var month_name = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var table_song_explicit = document.getElementById(table_body_id).getElementsByClassName("song_explicit");
 for (i = 0; i < table_song_title.length; i++) {
-	table_song_title[i].innerText = '"'+table_song_title[i].innerText+'"';
+	table_song_title[i].innerText = '“'+table_song_title[i].innerText+'”';
 	
 	table_song_album[i].style.fontStyle = "italic";
 	

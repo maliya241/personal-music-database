@@ -29,17 +29,17 @@ function add_song() {
 		// Creates a code block of song object to be copied into songs.js
 		// Changing format for the following block of code will affect its format on page.
 		document.getElementById("song_data_object").innerHTML += `songs_object[songs_object.length] = {
-	song_title:"`+document.getElementById("song_title_form").value+`",
-	song_album:'`+document.getElementById("song_album_form").value+`',
+	song_title:"`+document.getElementById("song_title_form").value.replaceAll("'", "’")+`",
+	song_album:'`+document.getElementById("song_album_form").value.replaceAll("'", "’")+`',
 	song_artist:`+song_artist_data+`,
-	song_duration:'`+document.getElementById("song_duration_form").value+`',
-	song_date_released:'`+document.getElementById("song_date_released_form").value+`',
+	song_duration:'`+document.getElementById("song_duration_form").value.replaceAll("'", "’")+`',
+	song_date_released:'`+document.getElementById("song_date_released_form").value.replaceAll("'", "’")+`',
 	song_language:`+song_language_data+`,
 	song_explicit:`+document.getElementById("song_explicit_form").checked+`,
 	song_genre:`+song_genre_data+`,
 	song_theme:`+song_theme_data+`,
-	song_discovered_how:'`+document.getElementById("song_discovered_how_form").value+`',
-	song_year_discovered:'`+document.getElementById("song_year_discovered_form").value+`',
+	song_discovered_how:'`+document.getElementById("song_discovered_how_form").value.replaceAll("'", "’")+`',
+	song_year_discovered:'`+document.getElementById("song_year_discovered_form").value.replaceAll("'", "’")+`',
 }
 
 `;

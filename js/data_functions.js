@@ -246,7 +246,7 @@ function create_pie_chart(pie_chart_id, filter_and_count_unique_array) {
 /**************
 create_horizontal_bar_chart adds svg path elements that represents data and a percentage of the max count that has been rounded up the nearest tens. 
 horizontal_bar_chart_id parameter is the id of a svg that contains blank start of a horizontal bar chart.
-filter_and_count_unique_array parameter is the result of filter_and_count_unique_array function which is an array of arrays. First array is the sorted and filtered items. Second array is the count. Third array contains the percentages to make the pie chart slices. 
+filter_and_count_unique_array parameter is the result of filter_and_count_unique_array function which is an array of arrays. First array is the sorted and filtered items. Second array is the count. Third array contains the percentages of the total count. 
 max_count parameter is the largest count value of filter_and_count_unique_array.
 Executes as a part of page set-up in its corresponding page js file.
 **************/
@@ -423,7 +423,7 @@ filter_and_count_unique_array parameter is the result of filter_and_count_unique
 		First property should be values for the y axis.
 		Second property should be values for the x axis (datetime values).
 	Second array is the count. 
-	Third array contains the percentages to make the pie chart slices. 
+	Third array contains the percentages of the total count. 
 max_count parameter is the largest count value of filter_and_count_unique_array.
 Executes as a part of page set-up in its corresponding page js file.
 **************/
