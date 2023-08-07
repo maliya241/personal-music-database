@@ -461,7 +461,7 @@ function create_timeline_horizontal_bar_chart(timeline_horizontal_bar_chart_id, 
 		display: block;
 		margin: auto 0;
 		color: rgb(0, 0, 0);
-		font-size: `+0.25*(chart_viewbox_object.height/100)+`rem; <!-- font size is calculated based on the svg viewbox height -->
+		font-size: `+0.125*(chart_viewbox_object.height/100)+`rem; <!-- font size is calculated based on the svg viewbox height -->
 		text-align: right;
 		word-wrap: break-word;
 		white-space: nowrap;

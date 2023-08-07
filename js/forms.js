@@ -108,7 +108,7 @@ function field_values_to_string(field_classname) {
 	if (field_classname_elements.length > 1) { //if more than one value, make add other value(s) to string and format string to look like an array
 		for (i = 1; i < field_classname_elements.length; i++) { //already added first value
 			if (field_classname_elements[i].value.length > 0) { //checks value is not empty
-				field_value_string += ", '"+field_classname_elements[i].value.replaceAll("'", "’").value+"'";
+				field_value_string += ", '"+field_classname_elements[i].value.replaceAll("'", "’")+"'";
 			}
 		}
 		if (field_value_string.length > (field_classname_elements[0].value.length+2)) { //checks for more than one value has been added to string
