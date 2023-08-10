@@ -1,0 +1,36 @@
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+	.chart_figure > svg {
+		height: 100%;
+	}
+	.chart_figure, .chart_table {
+		padding: 0 2.5%;
+		width: 45%;
+	}
+	
+	.chart_figure, .chart_table thead {
+		position: -webkit-sticky;
+		position: sticky;
+		top: 0;
+	}
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+	
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+	
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+	
+}

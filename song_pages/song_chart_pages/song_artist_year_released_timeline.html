@@ -18,23 +18,24 @@
 		<div id="artist_year_released_timeline_horizontal_bar_chart_color_selectors">
 		</div>
 		
-		<figure>
-			<figcaption><h2>Artist Year Released Timeline</h2></figcaption>
-			<svg width="100%" height="100%" viewBox="0 0 100 120" class="timeline_horizontal_bar_chart chart artist_year_released_timeline_horizontal_bar_chart" id="artist_year_released_timeline_horizontal_bar_chart" data-chart-data="song_artist_year_released_timeline"data-timeline-horizontal-bar-chart-padding-decimal-percentage="0.05" data-timeline-horizontal-bar-chart-legend-decimal-percentage="0.1" data-timeline-horizontal-bar-chart-x-axis-left-point-decimal-percentage="0.25" data-timeline-horizontal-bar-chart-x-axis-right-point-decimal-percentage="0.9" data-timeline-horizontal-bar-chart-y-axis-top-point-decimal-percentage="0.05"data-timeline-horizontal-bar-chart-y-axis-bottom-point-decimal-percentage="0.9">
-			</svg>
-		</figure>
-		
-		<table id="song_artist_year_released_timeline_table">
-			<thead>
-				<th class="song_artist_year_released_timeline_artist" onclick="sort_table('song_artist_year_released_timeline_table_body', 'song_artist_year_released_timeline_table_artist')">Artist</th>
-				<th class="song_artist_year_released_timeline_year_released" onclick="sort_table('song_artist_year_released_timeline_table_body', 'song_artist_year_released_timeline_table_year_released')">Year Released</th>
-				<th class="song_artist_year_released_timeline_artist_year_released_count" onclick="sort_table('song_artist_year_released_timeline_table_body', 'song_artist_year_released_timeline_table_count')">Count</th>
-				<th class="song_artist_year_released_timeline_artist_year_released_percentage" onclick="sort_table('song_artist_year_released_timeline_table_body', 'song_artist_year_released_timeline_table_percentage')">Percentage</th>
-			</thead>
-			<tbody id="song_artist_year_released_timeline_table_body">
-			</tbody>
-		</table>
-		
+		<div class="chart_row"> 
+			<figure class="chart_figure chart_column">
+				<figcaption>Artist Year Released Timeline</figcaption>
+				<svg width="100%" height="100%" viewBox="0 0 100 120" class="timeline_horizontal_bar_chart chart artist_year_released_timeline_horizontal_bar_chart" id="artist_year_released_timeline_horizontal_bar_chart" data-chart-data="song_artist_year_released_timeline"data-timeline-horizontal-bar-chart-padding-decimal-percentage="0.05" data-timeline-horizontal-bar-chart-legend-decimal-percentage="0.1" data-timeline-horizontal-bar-chart-x-axis-left-point-decimal-percentage="0.25" data-timeline-horizontal-bar-chart-x-axis-right-point-decimal-percentage="0.9" data-timeline-horizontal-bar-chart-y-axis-top-point-decimal-percentage="0.05"data-timeline-horizontal-bar-chart-y-axis-bottom-point-decimal-percentage="0.9">
+				</svg>
+			</figure>
+			
+			<table id="song_artist_year_released_timeline_table" class="chart_table chart_column">
+				<thead>
+					<th class="song_artist_year_released_timeline_artist" onclick="sort_table('song_artist_year_released_timeline_table_body', 'song_artist_year_released_timeline_table_artist')">Artist</th>
+					<th class="song_artist_year_released_timeline_year_released" onclick="sort_table('song_artist_year_released_timeline_table_body', 'song_artist_year_released_timeline_table_year_released')">Year Released</th>
+					<th class="song_artist_year_released_timeline_artist_year_released_count" onclick="sort_table('song_artist_year_released_timeline_table_body', 'song_artist_year_released_timeline_table_count')">Count</th>
+					<th class="song_artist_year_released_timeline_artist_year_released_percentage" onclick="sort_table('song_artist_year_released_timeline_table_body', 'song_artist_year_released_timeline_table_percentage')">Percentage</th>
+				</thead>
+				<tbody id="song_artist_year_released_timeline_table_body">
+				</tbody>
+			</table>
+		</div>
 		<footer id="footer">
 		</footer>
 		<div id="scripts">

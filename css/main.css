@@ -76,35 +76,76 @@ td[class$='_percentage']::after {
 	content: "%";
 }
 
-figcaption {
-	 text-align:center;
+/**************
+chart and table columns
+**************/
+figcaption, .chart_table thead  {
+	background-color: rgb(255, 255, 255);
+	text-align: left;
+	padding: 0.5em;
+	font-weight: bold;
+	font-size: 1.5em;
 }
 
-/**************
-svg
-**************/
+.chart_row, .chart_column {
+	margin: 0 auto;
+	display: block;
+}
 
-.pie_chart {
-  margin: 0 auto;
-  display: block;
+.chart_column {
+	display: inline-block;
+	width: 95vw;
+}
+
+.chart_figure, .chart_table {
+	width: 100%;
+}
+
+.chart_figure {
+	vertical-align: top;
+	margin: 0 auto;
+	background-color: rgb(255, 255, 255);
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+}
+
+.chart_row:after {
+	content: "";
+	display: table;
+	clear: both;
 }
 
 /**************
 color picker
 **************/
-	
-.color_swatch {
-	height: 3.75em;
-	width: 3.75em;
+
+.color_selectors_button {
+	border-radius: 0.5em;
+	padding: 0.5em;
+}
+
+.color_selectors > * {
+	vertical-align: top;
+	display: inline-block;
+	max-width: 5em;
+	margin: 0.25em;
+	padding: 1em;
 }
 
 .color_selector {
-	padding: 1em;
 	background-color: rgba(92, 157, 52, 1.0);
 	border-radius: 0.5em;
-	max-width: 5em;
-	margin: 0.25em;
-	display: inline-block;
+}
+
+.add_color_button {
+	height: 100%;
+	border-radius: 0.5em;
+}
+
+.color_swatch {
+	height: 3.75em;
+	width: 3.75em;
 }
 
 .color_text_input {
@@ -120,8 +161,4 @@ color picker
 	display: block;
 }
 
-.add_color_button {
-	display: inline-block;
-	height: 100%;
-	max-width: 5em;
-}
+
